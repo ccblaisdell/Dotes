@@ -1,3 +1,3 @@
-defmodule DotaQuantifyElixir.Repo do
-  use Ecto.Repo, otp_app: :dota_quantify_elixir
+defmodule DotaQuantify.Repo do
+  use Ecto.Repo, otp_app: :dota_quantify
 end

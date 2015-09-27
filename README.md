@@ -1,4 +1,4 @@
-# DotaQuantifyElixir
+# DotaQuantify
 
 To start your Phoenix app:
 

@@ -1,4 +1,4 @@
-defmodule DotaQuantifyElixir.ModelCase do
+defmodule DotaQuantify.ModelCase do
   @moduledoc """
   This module defines the test case to be used by
   model tests.
@@ -16,16 +16,16 @@ defmodule DotaQuantifyElixir.ModelCase do
 
   using do
     quote do
-      alias DotaQuantifyElixir.Repo
+      alias DotaQuantify.Repo
       import Ecto.Model
       import Ecto.Query, only: [from: 2]
-      import DotaQuantifyElixir.ModelCase
+      import DotaQuantify.ModelCase
     end
   end
 
   setup tags do
     unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(DotaQuantifyElixir.Repo, [])
+      Ecto.Adapters.SQL.restart_test_transaction(DotaQuantify.Repo, [])
     end
 
     :ok

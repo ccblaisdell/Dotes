@@ -1,5 +1,5 @@
-defmodule DotaQuantifyElixir.Router do
-  use DotaQuantifyElixir.Web, :router
+defmodule DotaQuantify.Router do
+  use DotaQuantify.Web, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -13,14 +13,15 @@ defmodule DotaQuantifyElixir.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", DotaQuantifyElixir do
+  scope "/", DotaQuantify do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    resources "/matches", MatchController
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", DotaQuantifyElixir do
+  # scope "/api", DotaQuantify do
   #   pipe_through :api
   # end
 end

@@ -1,12 +1,12 @@
-defmodule DotaQuantifyElixir.Web do
+defmodule DotaQuantify.Web do
   @moduledoc """
   A module that keeps using definitions for controllers,
   views and so on.
 
   This can be used in your application as:
 
-      use DotaQuantifyElixir.Web, :controller
-      use DotaQuantifyElixir.Web, :view
+      use DotaQuantify.Web, :controller
+      use DotaQuantify.Web, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -26,11 +26,11 @@ defmodule DotaQuantifyElixir.Web do
     quote do
       use Phoenix.Controller
 
-      alias DotaQuantifyElixir.Repo
+      alias DotaQuantify.Repo
       import Ecto.Model
       import Ecto.Query, only: [from: 2]
 
-      import DotaQuantifyElixir.Router.Helpers
+      import DotaQuantify.Router.Helpers
     end
   end
 
@@ -44,7 +44,7 @@ defmodule DotaQuantifyElixir.Web do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import DotaQuantifyElixir.Router.Helpers
+      import DotaQuantify.Router.Helpers
     end
   end
 
@@ -58,7 +58,7 @@ defmodule DotaQuantifyElixir.Web do
     quote do
       use Phoenix.Channel
 
-      alias DotaQuantifyElixir.Repo
+      alias DotaQuantify.Repo
       import Ecto.Model
       import Ecto.Query, only: [from: 2]
 

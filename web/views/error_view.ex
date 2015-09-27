@@ -1,5 +1,5 @@
-defmodule DotaQuantifyElixir.ErrorView do
-  use DotaQuantifyElixir.Web, :view
+defmodule DotaQuantify.ErrorView do
+  use DotaQuantify.Web, :view
 
   def render("404.html", _assigns) do
     "Page not found"

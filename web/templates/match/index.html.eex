@@ -1,0 +1,34 @@
+<h2>Listing matches</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Match</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for match <- @matches do %>
+    <tr>
+      <td><%= match.match_id %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: match_path(@conn, :show, match), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: match_path(@conn, :edit, match), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: match_path(@conn, :delete, match), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New match", to: match_path(@conn, :new) %>
+
+<ul>
+  <%= for match <- @api_matches do %>
+    <li>
+      ID: <%= match.match_id %>
+    </li>
+  <% end %>
+</ul>

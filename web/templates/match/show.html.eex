@@ -1,0 +1,14 @@
+<h2>Show match</h2>
+
+<ul>
+
+  <li>
+    <strong>Match:</strong>
+    <%= @match.match_id %>
+  </li>
+
+</ul>
+
+
+<%= link "Edit", to: match_path(@conn, :edit, @match) %>
+<%= link "Back", to: match_path(@conn, :index) %>

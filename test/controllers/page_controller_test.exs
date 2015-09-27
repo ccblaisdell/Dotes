@@ -1,5 +1,5 @@
-defmodule DotaQuantifyElixir.PageControllerTest do
-  use DotaQuantifyElixir.ConnCase
+defmodule DotaQuantify.PageControllerTest do
+  use DotaQuantify.ConnCase
 
   test "GET /" do
     conn = get conn(), "/"

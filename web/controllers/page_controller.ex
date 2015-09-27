@@ -1,5 +1,5 @@
-defmodule DotaQuantifyElixir.PageController do
-  use DotaQuantifyElixir.Web, :controller
+defmodule DotaQuantify.PageController do
+  use DotaQuantify.Web, :controller
 
   def index(conn, _params) do
     render conn, "index.html"

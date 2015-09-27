@@ -1,14 +1,14 @@
-defmodule DotaQuantifyElixir.Endpoint do
-  use Phoenix.Endpoint, otp_app: :dota_quantify_elixir
+defmodule DotaQuantify.Endpoint do
+  use Phoenix.Endpoint, otp_app: :dota_quantify
 
-  socket "/socket", DotaQuantifyElixir.UserSocket
+  socket "/socket", DotaQuantify.UserSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phoenix.digest
   # when deploying your static files in production.
   plug Plug.Static,
-    at: "/", from: :dota_quantify_elixir, gzip: false,
+    at: "/", from: :dota_quantify, gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt)
 
   # Code reloading can be explicitly enabled under the
@@ -32,8 +32,8 @@ defmodule DotaQuantifyElixir.Endpoint do
 
   plug Plug.Session,
     store: :cookie,
-    key: "_dota_quantify_elixir_key",
+    key: "_dota_quantify_key",
     signing_salt: "NX+exacI"
 
-  plug DotaQuantifyElixir.Router
+  plug DotaQuantify.Router
 end

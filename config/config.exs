@@ -6,12 +6,12 @@
 use Mix.Config
 
 # Configures the endpoint
-config :dota_quantify_elixir, DotaQuantifyElixir.Endpoint,
+config :dota_quantify, DotaQuantify.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
   secret_key_base: "qiZYvU2SL6L+CM/uiOeigy816Ix3x4J9vnBPHH6GKexCxh077szCh+hjSpzCxICL",
-  render_errors: [default_format: "html"],
-  pubsub: [name: DotaQuantifyElixir.PubSub,
+  render_errors: [accepts: ["html"]],
+  pubsub: [name: DotaQuantify.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger

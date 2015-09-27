@@ -1,8 +1,8 @@
-defmodule DotaQuantifyElixir.UserSocket do
+defmodule DotaQuantify.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "rooms:*", DotaQuantifyElixir.RoomChannel
+  # channel "rooms:*", DotaQuantify.RoomChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
@@ -30,7 +30,7 @@ defmodule DotaQuantifyElixir.UserSocket do
   # Would allow you to broadcast a "disconnect" event and terminate
   # all active sockets and channels for a given user:
   #
-  #     DotaQuantifyElixir.Endpoint.broadcast("users_socket:" <> user.id, "disconnect", %{})
+  #     DotaQuantify.Endpoint.broadcast("users_socket:" <> user.id, "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
   def id(_socket), do: nil

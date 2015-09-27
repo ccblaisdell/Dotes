@@ -1,3 +1,3 @@
-defmodule DotaQuantifyElixir.PageViewTest do
-  use DotaQuantifyElixir.ConnCase, async: true
+defmodule DotaQuantify.PageViewTest do
+  use DotaQuantify.ConnCase, async: true
 end

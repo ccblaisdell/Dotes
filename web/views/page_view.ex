@@ -1,3 +1,3 @@
-defmodule DotaQuantifyElixir.PageView do
-  use DotaQuantifyElixir.Web, :view
+defmodule DotaQuantify.PageView do
+  use DotaQuantify.Web, :view
 end
