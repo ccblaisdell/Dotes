@@ -28,7 +28,7 @@
 <ul>
   <%= for match <- @api_matches do %>
     <li>
-      ID: <%= match.match_id %>
+      ID: <%= match["match_id"] %>
     </li>
   <% end %>
 </ul>

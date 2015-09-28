@@ -5,6 +5,22 @@
 # is restricted to this project.
 use Mix.Config
 
+# Load system env vars from application.config, only used for development
+# This cannot be in dev.exs because we need the environment in this file
+if Mix.env == :dev do
+  file = Path.join(__DIR__, "application.config")
+
+  case File.read(file) do
+    {:ok, contents} ->
+      String.split(contents, "\n", trim: true)
+      |> Enum.each(fn line ->
+           [key, value] = String.split(line, "=")
+           System.put_env(key, value)
+         end)
+    {:error, _} ->
+  end
+end
+
 # Configures the endpoint
 config :dota_quantify, DotaQuantify.Endpoint,
   url: [host: "localhost"],
