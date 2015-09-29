@@ -3,7 +3,7 @@ defmodule DotaQuantify.Repo.Migrations.CreatePlayer do
 
   def change do
     create table(:players) do
-      add :account_id, :integer
+      add :account_id, :bigint
       add :assists, :integer
       add :deaths, :integer
       add :gold, :integer

@@ -1,0 +1,95 @@
+<ul>
+
+  <li>
+  	<strong>account_id:</strong>
+		<%= @player.account_id %>
+  </li>
+  <li>
+  	<strong>assists:</strong>
+		<%= @player.assists %>
+  </li>
+  <li>
+  	<strong>deaths:</strong>
+		<%= @player.deaths %>
+  </li>
+  <li>
+  	<strong>gold:</strong>
+		<%= @player.gold %>
+  </li>
+  <li>
+  	<strong>denies:</strong>
+		<%= @player.denies %>
+  </li>
+  <li>
+  	<strong>gold_per_min:</strong>
+		<%= @player.gold_per_min %>
+  </li>
+  <li>
+  	<strong>gold_spent:</strong>
+		<%= @player.gold_spent %>
+  </li>
+  <li>
+  	<strong>hero_damage:</strong>
+		<%= @player.hero_damage %>
+  </li>
+  <li>
+  	<strong>hero_healing:</strong>
+		<%= @player.hero_healing %>
+  </li>
+  <li>
+  	<strong>hero:</strong>
+		<%= DotaApi.Hero.get @player.hero_id %>
+  </li>
+  <li>
+  	<strong>item_0:</strong>
+		<%= DotaApi.Item.get @player.item_0 %>
+  </li>
+  <li>
+  	<strong>item_1:</strong>
+		<%= DotaApi.Item.get @player.item_1 %>
+  </li>
+  <li>
+  	<strong>item_2:</strong>
+		<%= DotaApi.Item.get @player.item_2 %>
+  </li>
+  <li>
+  	<strong>item_3:</strong>
+		<%= DotaApi.Item.get @player.item_3 %>
+  </li>
+  <li>
+  	<strong>item_4:</strong>
+		<%= DotaApi.Item.get @player.item_4 %>
+  </li>
+  <li>
+  	<strong>item_5:</strong>
+		<%= DotaApi.Item.get @player.item_5 %>
+  </li>
+  <li>
+  	<strong>kills:</strong>
+		<%= @player.kills %>
+  </li>
+  <li>
+  	<strong>last_hits:</strong>
+		<%= @player.last_hits %>
+  </li>
+  <li>
+  	<strong>leaver_status:</strong>
+		<%= @player.leaver_status %>
+  </li>
+  <li>
+  	<strong>level:</strong>
+		<%= @player.level %>
+  </li>
+  <li>
+  	<strong>player_slot:</strong>
+		<%= @player.player_slot %>
+  </li>
+  <li>
+  	<strong>tower_damage:</strong>
+		<%= @player.tower_damage %>
+  </li>
+  <li>
+  	<strong>xp_per_min:</strong>
+		<%= @player.xp_per_min %>
+  </li>
+</ul>

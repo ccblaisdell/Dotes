@@ -36,6 +36,6 @@ defmodule DotaQuantify.Mixfile do
      {:phoenix_html, "~> 2.2"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:cowboy, "~> 1.0"},
-     {:dota_api, git: "git://github.com/ccblaisdell/dota-elixir.git"}]
+     {:dota_api, git: "git://github.com/ccblaisdell/dota-elixir.git", tag: "v0.0.2"}]
   end
 end

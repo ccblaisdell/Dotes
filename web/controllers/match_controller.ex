@@ -2,6 +2,8 @@ defmodule DotaQuantify.MatchController do
   use DotaQuantify.Web, :controller
 
   alias DotaQuantify.Match
+  alias DotaQuantify.Player
+  require IEx
 
   plug :scrub_params, "match" when action in [:create, :update]
 
@@ -19,13 +21,28 @@ defmodule DotaQuantify.MatchController do
     {:ok, match_params} = DotaApi.match(match_id)
     changeset = Match.changeset(%Match{}, match_params)
 
-    case Repo.insert(changeset) do
+    result = Repo.insert(changeset)
+    {:ok, match} = result
+
+    IEx.pry
+
+    for player <- match_params["players"] do
+      player_params = player |> Enum.map(fn {k, v} -> {String.to_atom(k), v} end)
+      player_changeset = match |> build(:players, player_params)
+
+      # player_build = match |> build(:players, Enum.into(player, []))
+      # player_changeset = Player.changeset(%Player{}, player_build)
+      # player_changeset = match |> build(:players, player) |> Player.changeset
+      Repo.insert(player_changeset)
+    end
+
+    case result do
       {:ok, _match} ->
         conn
         |> put_flash(:info, "Match created successfully.")
         |> redirect(to: match_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset, match_params: match_params)
+        render(conn, "new.html", changeset: changeset)
     end
   end
 
