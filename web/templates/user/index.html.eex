@@ -1,0 +1,40 @@
+<h2>Listing users</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Avatar</th>
+      <th>Lastlogoff</th>
+      <th>Personaname</th>
+      <th>Profileurl</th>
+      <th>Realname</th>
+      <th>Steamid</th>
+      <th>Timecreated</th>
+      <th>Dotaid</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for user <- @users do %>
+    <tr>
+      <td><img src="<%= user.avatar %>" /></td>
+      <td><%= user.lastlogoff %></td>
+      <td><%= user.personaname %></td>
+      <td><a href="<%= user.profileurl %>">profile</a></td>
+      <td><%= user.realname %></td>
+      <td><%= user.steamid %></td>
+      <td><%= user.timecreated %></td>
+      <td><%= user.dotaid %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: user_path(@conn, :show, user), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: user_path(@conn, :edit, user), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: user_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New user", to: user_path(@conn, :new) %>

@@ -1,0 +1,93 @@
+<h2>Show user</h2>
+
+<ul>
+
+  <li>
+    <strong>Avatar:</strong>
+    <img src="<%= @user.avatar %>">
+  </li>
+
+  <li>
+    <strong>Avatarfull:</strong>
+    <img src="<%= @user.avatarfull %>">
+  </li>
+
+  <li>
+    <strong>Avatarmedium:</strong>
+    <img src="<%= @user.avatarmedium %>">
+  </li>
+
+  <li>
+    <strong>Communityvisibility:</strong>
+    <%= @user.communityvisibility %>
+  </li>
+
+  <li>
+    <strong>Lastlogoff:</strong>
+    <%= @user.lastlogoff %>
+  </li>
+
+  <li>
+    <strong>Loccountrycode:</strong>
+    <%= @user.loccountrycode %>
+  </li>
+
+  <li>
+    <strong>Locstatecode:</strong>
+    <%= @user.locstatecode %>
+  </li>
+
+  <li>
+    <strong>Personaname:</strong>
+    <%= @user.personaname %>
+  </li>
+
+  <li>
+    <strong>Personastate:</strong>
+    <%= @user.personastate %>
+  </li>
+
+  <li>
+    <strong>Personastateflags:</strong>
+    <%= @user.personastateflags %>
+  </li>
+
+  <li>
+    <strong>Primaryclanid:</strong>
+    <%= @user.primaryclanid %>
+  </li>
+
+  <li>
+    <strong>Profilestate:</strong>
+    <%= @user.profilestate %>
+  </li>
+
+  <li>
+    <strong>Profileurl:</strong>
+    <a href="<%= @user.profileurl %>"><%= @user.profileurl %></a>
+  </li>
+
+  <li>
+    <strong>Realname:</strong>
+    <%= @user.realname %>
+  </li>
+
+  <li>
+    <strong>Steamid:</strong>
+    <%= @user.steamid %>
+  </li>
+
+  <li>
+    <strong>Timecreated:</strong>
+    <%= @user.timecreated %>
+  </li>
+
+  <li>
+    <strong>Dotaid:</strong>
+    <%= @user.dotaid %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: user_path(@conn, :edit, @user) %>
+<%= link "Back", to: user_path(@conn, :index) %>

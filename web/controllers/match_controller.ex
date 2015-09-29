@@ -24,15 +24,9 @@ defmodule DotaQuantify.MatchController do
     result = Repo.insert(changeset)
     {:ok, match} = result
 
-    IEx.pry
-
     for player <- match_params["players"] do
       player_params = player |> Enum.map(fn {k, v} -> {String.to_atom(k), v} end)
       player_changeset = match |> build(:players, player_params)
-
-      # player_build = match |> build(:players, Enum.into(player, []))
-      # player_changeset = Player.changeset(%Player{}, player_build)
-      # player_changeset = match |> build(:players, player) |> Player.changeset
       Repo.insert(player_changeset)
     end
 

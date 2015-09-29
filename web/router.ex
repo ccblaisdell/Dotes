@@ -18,6 +18,7 @@ defmodule DotaQuantify.Router do
 
     get "/", PageController, :index
     resources "/matches", MatchController
+    resources "/users", UserController
   end
 
   # Other scopes may use custom stacks.

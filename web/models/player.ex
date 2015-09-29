@@ -27,6 +27,7 @@ defmodule DotaQuantify.Player do
     field :xp_per_min, :integer
 
     belongs_to :match, DotaQuantify.Match
+    belongs_to :user, DotaQuantify.User
   end
 
   @required_fields ~w(account_id assists deaths gold denies gold_per_min gold_spent hero_damage hero_healing hero_id item_0 item_1 item_2 item_3 item_4 item_5 kills last_hits leaver_status level player_slot tower_damage xp_per_min match_id)
