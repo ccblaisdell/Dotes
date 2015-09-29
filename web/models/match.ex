@@ -23,7 +23,7 @@ defmodule DotaQuantify.Match do
     field :cluster, :integer
     field :league_id, :integer
 
-    timestamps
+    has_many :players, DotaQuantify.Player, on_delete: :delete_all
   end
 
   @required_fields ~w(match_id start_time lobby_type game_mode radiant_win duration

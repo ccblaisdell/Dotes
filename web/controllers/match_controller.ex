@@ -30,7 +30,7 @@ defmodule DotaQuantify.MatchController do
   end
 
   def show(conn, %{"id" => id}) do
-    match = Repo.get!(Match, id)
+    match = Match |> Repo.get!(id) |> Repo.preload [:players]
     render(conn, "show.html", match: match)
   end
 
