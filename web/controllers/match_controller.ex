@@ -7,10 +7,7 @@ defmodule DotaQuantify.MatchController do
 
   def index(conn, _params) do
     matches = Repo.all(Match)
-
-    {:ok, api_matches} = DotaApi.matches_for("76561197966764637")
-
-    render(conn, "index.html", matches: matches, api_matches: api_matches)
+    render(conn, "index.html", matches: matches)
   end
 
   def new(conn, _params) do
@@ -18,7 +15,8 @@ defmodule DotaQuantify.MatchController do
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"match" => match_params}) do
+  def create(conn, %{"match" => %{"match_id" => match_id}}) do
+    {:ok, match_params} = DotaApi.match(match_id)
     changeset = Match.changeset(%Match{}, match_params)
 
     case Repo.insert(changeset) do
@@ -27,7 +25,7 @@ defmodule DotaQuantify.MatchController do
         |> put_flash(:info, "Match created successfully.")
         |> redirect(to: match_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", changeset: changeset, match_params: match_params)
     end
   end
 

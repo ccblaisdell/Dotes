@@ -24,11 +24,3 @@
 </table>
 
 <%= link "New match", to: match_path(@conn, :new) %>
-
-<ul>
-  <%= for match <- @api_matches do %>
-    <li>
-      ID: <%= match["match_id"] %>
-    </li>
-  <% end %>
-</ul>

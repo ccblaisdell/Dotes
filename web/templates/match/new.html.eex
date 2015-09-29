@@ -4,3 +4,5 @@
                         action: match_path(@conn, :create) %>
 
 <%= link "Back", to: match_path(@conn, :index) %>
+
+<p><%= inspect @changeset %></p>

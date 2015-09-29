@@ -3,9 +3,79 @@
 <ul>
 
   <li>
-    <strong>Match:</strong>
+    <strong>Match ID:</strong>
     <%= @match.match_id %>
   </li>
+	<li>
+		<strong>Seq_num:</strong>
+		<%= @match.seq_num %>
+	</li>
+	<li>
+		<strong>Start_time:</strong>
+		<%= @match.start_time %>
+	</li>
+	<li>
+		<strong>Lobby_type:</strong>
+		<%= @match.lobby_type %>
+	</li>
+	<li>
+		<strong>Game_mode:</strong>
+		<%= @match.game_mode %>
+	</li>
+	<li>
+		<strong>Radiant_win:</strong>
+		<%= @match.radiant_win %>
+	</li>
+	<li>
+		<strong>Duration:</strong>
+		<%= @match.duration %>
+	</li>
+
+	<li>
+		<strong>First_blood_time:</strong>
+		<%= @match.first_blood_time %>
+	</li>
+	<li>
+		<strong>Tower_status_dire:</strong>
+		<%= @match.tower_status_dire %>
+	</li>
+	<li>
+		<strong>Tower_status_radiant:</strong>
+		<%= @match.tower_status_radiant %>
+	</li>
+	<li>
+		<strong>Barracks_status_dire:</strong>
+		<%= @match.barracks_status_dire %>
+	</li>
+	<li>
+		<strong>Barracks_status_radiant:</strong>
+		<%= @match.barracks_status_radiant %>
+	</li>
+
+	<li>
+		<strong>Season:</strong>
+		<%= @match.season %>
+	</li>
+	<li>
+		<strong>Human_players:</strong>
+		<%= @match.human_players %>
+	</li>
+	<li>
+		<strong>Positive_votes:</strong>
+		<%= @match.positive_votes %>
+	</li>
+	<li>
+		<strong>Negative_votes:</strong>
+		<%= @match.negative_votes %>
+	</li>
+	<li>
+		<strong>Cluster:</strong>
+		<%= @match.cluster %>
+	</li>
+	<li>
+		<strong>League_id:</strong>
+		<%= @match.league_id %>
+	</li>
 
 </ul>
 

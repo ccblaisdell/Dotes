@@ -3,7 +3,7 @@ defmodule DotaQuantify.Repo.Migrations.CreateMatch do
 
   def change do
     create table(:matches) do
-      add :match_id, :string
+      add :match_id, :integer
 
       timestamps
     end
