@@ -89,5 +89,13 @@
 
 </ul>
 
+<h2>Players</h2>
+
+<ul>
+  <%= for player <- @user.players do %>
+    <%= render DotaQuantify.PlayerView, "player.html", player: player, conn: @conn %>
+  <% end %>
+</ul>
+
 <%= link "Edit", to: user_path(@conn, :edit, @user) %>
 <%= link "Back", to: user_path(@conn, :index) %>

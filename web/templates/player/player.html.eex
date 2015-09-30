@@ -1,8 +1,18 @@
 <ul>
 
   <li>
-  	<strong>account_id:</strong>
-		<%= @player.account_id %>
+    <strong>USER:</strong>
+    <%= if @player.user_id do %>
+      <%= link "user", to: user_path(@conn, :show, @player.user_id) %>
+    <% end %>
+  </li>
+  <li>
+    <strong>MATCH:</strong>
+    <%= link "match", to: match_path(@conn, :show, @player.match_id) %>
+  </li>
+  <li>
+    <strong>account_id:</strong>
+    <%= @player.account_id %>
   </li>
   <li>
   	<strong>assists:</strong>

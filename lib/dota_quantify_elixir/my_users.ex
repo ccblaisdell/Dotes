@@ -25,7 +25,7 @@ defmodule DotaQuantify.MyUsers do
 	def init(:ok) do
 		users = DotaQuantify.User 
 		|> Repo.all
-		|> Enum.map(fn user -> {user.dotaid, %{personaname: user.personaname, avatar: user.avatar}} end)
+		|> Enum.map(fn user -> {user.dotaid, %{personaname: user.personaname, avatar: user.avatar, id: user.id}} end)
 		|> Enum.into(%{})
 		{:ok, users}
 	end
