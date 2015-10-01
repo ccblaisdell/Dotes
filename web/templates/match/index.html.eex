@@ -25,6 +25,14 @@
     </tr>
 <% end %>
   </tbody>
+  <tfoot>
+    <tr>
+      <td colspan=2>
+        <%= content_tag :div, @pagination_links, class: "pull-left" %>
+        <%= content_tag :div, @pagination_window, class: "pull-right" %>
+      </td>
+    </tr>
+  </tfoot>
 </table>
 
 <%= link "New match", to: match_path(@conn, :new) %>

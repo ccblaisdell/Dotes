@@ -33,3 +33,4 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 - genserver to hold recent match ids so we don't refetch them
 	- maybe some smarter way to keep from stepping on toes
 	- maybe a server to manage multiuser batch operations
+- try using prepared statements for match and player creation for faster inserts
