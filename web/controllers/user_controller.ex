@@ -1,8 +1,11 @@
 defmodule DotaQuantify.UserController do
   use DotaQuantify.Web, :controller
   require Logger
+  import Ecto.Query
 
   alias DotaQuantify.User
+  alias DotaQuantify.Player
+  alias DotaQuantify.PaginationView
 
   plug :scrub_params, "user" when action in [:create, :update]
 
@@ -30,11 +33,21 @@ defmodule DotaQuantify.UserController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    user = User 
-    |> Repo.get!(id) 
-    |> Repo.preload([:players, players: :match])
-    render(conn, "show.html", user: user)
+  def show(conn, %{"id" => id} = params) do
+
+    user = Repo.get!(User, id)
+    page = Player
+    |> where([p], p.user_id == ^id)
+    |> preload(:match)
+    |> Repo.paginate(params)
+
+    pagination_links  = PaginationView.pagination_links(page, params)
+    pagination_window = PaginationView.pagination_window(page)
+
+    render(conn, "show.html", user: user, players: page.entries, 
+                              page_number: page.page_number, page_size: page.page_size, 
+                              total_pages: page.total_pages, total_entries: page.total_entries, 
+                              pagination_links: pagination_links, pagination_window: pagination_window)
   end
 
   def edit(conn, %{"id" => id}) do

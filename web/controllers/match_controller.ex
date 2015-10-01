@@ -5,7 +5,7 @@ defmodule DotaQuantify.MatchController do
 
   alias DotaQuantify.Match
   alias DotaQuantify.Player
-  alias DotaQuantify.PaginationView, as: Pagination
+  alias DotaQuantify.PaginationView
 
   plug :scrub_params, "match" when action in [:create, :update]
 
@@ -14,8 +14,8 @@ defmodule DotaQuantify.MatchController do
     |> Ecto.Query.order_by([m], desc: m.start_time)
     |> Repo.paginate(params)
 
-    pagination_links = Pagination.pagination_links(page, params)
-    pagination_window = Pagination.pagination_window(page)
+    pagination_links = PaginationView.pagination_links(page, params)
+    pagination_window = PaginationView.pagination_window(page)
 
     render(conn, "index.html", matches: page.entries, page_number: page.page_number,
                                page_size: page.page_size, total_pages: page.total_pages,

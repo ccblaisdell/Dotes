@@ -97,10 +97,17 @@
 <h2>Players</h2>
 
 <ul>
-  <%= for player <- @user.players do %>
-    <%= render DotaQuantify.PlayerView, "player.html", player: player, match: player.match, conn: @conn %>
+  <%= for player <- @players do %>
+    <%= player.match_id %>
+    <%= render DotaQuantify.PlayerView, "player.html", player: player, match: player.match, 
+                                                       conn: @conn %>
   <% end %>
 </ul>
+
+<p>
+  <%= content_tag :div, @pagination_window, class: "pull-right" %>
+  <%= content_tag :div, @pagination_links %>
+</p>
 
 <%= link "Edit", to: user_path(@conn, :edit, @user) %>
 <%= link "Back", to: user_path(@conn, :index) %>
