@@ -1,5 +1,6 @@
 defmodule DotaQuantify.UserController do
   use DotaQuantify.Web, :controller
+  require Logger
 
   alias DotaQuantify.User
 
@@ -15,8 +16,6 @@ defmodule DotaQuantify.UserController do
     render(conn, "new.html", changeset: changeset)
   end
 
-  # 76561197966764637
-  # 6498909
   def create(conn, %{"user" => %{"steamid" => steamid} = user_params}) do
     {:ok, api_params} = DotaApi.profile(steamid)
     changeset = User.changeset(%User{}, Map.merge(user_params, api_params))
@@ -32,7 +31,9 @@ defmodule DotaQuantify.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = User |> Repo.get!(id) |> Repo.preload([:players])
+    user = User 
+    |> Repo.get!(id) 
+    |> Repo.preload([:players, players: :match])
     render(conn, "show.html", user: user)
   end
 
@@ -66,5 +67,23 @@ defmodule DotaQuantify.UserController do
     conn
     |> put_flash(:info, "User deleted successfully.")
     |> redirect(to: user_path(conn, :index))
+  end
+
+  def get(conn, %{"id" => id}) do
+    user = Repo.get!(User, id)
+    count = DotaQuantify.Match.get_for_user(user.dotaid)
+
+    conn
+    |> put_flash(:info, "Fetched #{count} matches")
+    |> redirect(to: user_path(conn, :show, user))
+  end
+
+  def get_all(conn, %{"id" => id}) do
+    user = Repo.get!(User, id)
+    count = DotaQuantify.Match.get_all_for_user(user.dotaid)
+
+    conn
+    |> put_flash(:info, "Fetched #{count} matches")
+    |> redirect(to: user_path(conn, :show, user))
   end
 end

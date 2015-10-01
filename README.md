@@ -23,9 +23,13 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 - user dotaid as primary key for user
 - paginate matches and players
 - batch get for individual users
+	- regular and dotabuff
 - batch get for all users
 - scrape dotabuff for match ids
 - automate fetching of hero and item images -> dota_api?
 - add new hero and items -> dota_api
 - update hero and item names -> dota_api
 - nice display of players and matches
+- genserver to hold recent match ids so we don't refetch them
+	- maybe some smarter way to keep from stepping on toes
+	- maybe a server to manage multiuser batch operations

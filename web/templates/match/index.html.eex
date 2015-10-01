@@ -1,5 +1,9 @@
 <h2>Listing matches</h2>
 
+<ul class="nav nav-pills">
+  <li><%= link "Delete all", to: match_path(@conn, :delete_all) %></li>
+</ul>
+
 <table class="table">
   <thead>
     <tr>

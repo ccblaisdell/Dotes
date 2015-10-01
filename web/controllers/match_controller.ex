@@ -3,7 +3,6 @@ defmodule DotaQuantify.MatchController do
 
   alias DotaQuantify.Match
   alias DotaQuantify.Player
-  require IEx
 
   plug :scrub_params, "match" when action in [:create, :update]
 
@@ -19,17 +18,7 @@ defmodule DotaQuantify.MatchController do
 
   def create(conn, %{"match" => %{"match_id" => match_id}}) do
     {:ok, match_params} = DotaApi.match(match_id)
-    changeset = Match.changeset(%Match{}, match_params)
-
-    result = Repo.insert(changeset)
-    {:ok, match} = result
-
-    for player <- match_params["players"] do
-      player_params = player |> Enum.map(fn {k, v} -> {String.to_atom(k), v} end)
-      player_changeset = match |> build(:players, player_params)
-      Repo.insert(player_changeset)
-    end
-
+    result = create_match(match_params)
     case result do
       {:ok, _match} ->
         conn
@@ -40,8 +29,29 @@ defmodule DotaQuantify.MatchController do
     end
   end
 
+  def create_match(match_params) do
+    changeset = Match.changeset(%Match{}, match_params)
+
+    result = Repo.insert(changeset)
+    case result do
+      {:ok, match} ->
+        for player <- match_params["players"] do
+          player_params = player |> Enum.map(fn {k, v} -> {String.to_atom(k), v} end)
+          player_changeset = match |> build(:players, player_params)
+          Repo.insert(player_changeset)
+        end
+
+      _ -> nil
+    end
+
+    result
+  end
+
   def show(conn, %{"id" => id}) do
-    match = Match |> Repo.get!(id) |> Repo.preload [:players]
+    # match = Match |> Repo.get!(id) |> Repo.preload [:players]
+    match = Match 
+    |> Repo.get!(id) 
+    |> Repo.preload([:players, players: :user])
     render(conn, "show.html", match: match)
   end
 
@@ -74,6 +84,15 @@ defmodule DotaQuantify.MatchController do
 
     conn
     |> put_flash(:info, "Match deleted successfully.")
+    |> redirect(to: match_path(conn, :index))
+  end
+
+  def delete_all(conn, _) do
+    Repo.delete_all(Match)
+    Repo.delete_all(Player)
+
+    conn
+    |> put_flash(:info, "All matches deleted successfully.")
     |> redirect(to: match_path(conn, :index))
   end
 end

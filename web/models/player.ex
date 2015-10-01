@@ -54,4 +54,12 @@ defmodule DotaQuantify.Player do
         changeset
     end
   end
+
+  def radiant?(player) do
+    player.player_slot < 128
+  end
+
+  def won?(player, match) do
+    radiant?(player) and match.radiant_win
+  end
 end

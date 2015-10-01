@@ -6,9 +6,14 @@
       <%= link "user", to: user_path(@conn, :show, @player.user_id) %>
     <% end %>
   </li>
+
   <li>
     <strong>MATCH:</strong>
-    <%= link "match", to: match_path(@conn, :show, @player.match_id) %>
+    <%= link "match", to: match_path(@conn, :show, @match.id) %>
+  </li>
+  <li>
+    <strong>WON?</strong>
+    <%= DotaQuantify.Player.won?(@player, @match) %>
   </li>
   <li>
     <strong>account_id:</strong>

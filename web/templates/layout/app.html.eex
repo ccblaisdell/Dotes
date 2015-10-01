@@ -15,7 +15,8 @@
     <div class="container" role="main">
       <div class="header">
         <ul class="nav nav-pills pull-right">
-          <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
+          <li><%= link "Users", to: user_path(@conn, :index) %></li>
+          <li><%= link "Matches", to: match_path(@conn, :index) %></li>
         </ul>
         <span class="logo"></span>
       </div>

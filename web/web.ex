@@ -19,6 +19,7 @@ defmodule DotaQuantify.Web do
   def model do
     quote do
       use Ecto.Model
+      require IEx
     end
   end
 
@@ -31,6 +32,7 @@ defmodule DotaQuantify.Web do
       import Ecto.Query, only: [from: 2]
 
       import DotaQuantify.Router.Helpers
+      require IEx
     end
   end
 

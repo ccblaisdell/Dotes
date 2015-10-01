@@ -1,5 +1,10 @@
 <h2>Show user</h2>
 
+<ul class="nav nav-pills">
+  <li><%= link "Get matches for #{@user.personaname}", to: user_path(@conn, :get, @user) %></li>
+  <li><%= link "Get ALL matches for #{@user.personaname}", to: user_path(@conn, :get_all, @user) %></li>
+</ul>
+
 <ul>
 
   <li>
@@ -93,7 +98,7 @@
 
 <ul>
   <%= for player <- @user.players do %>
-    <%= render DotaQuantify.PlayerView, "player.html", player: player, conn: @conn %>
+    <%= render DotaQuantify.PlayerView, "player.html", player: player, match: player.match, conn: @conn %>
   <% end %>
 </ul>
 

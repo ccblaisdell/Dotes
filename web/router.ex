@@ -17,8 +17,13 @@ defmodule DotaQuantify.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    
+    get "/matches/delete_all", MatchController, :delete_all
     resources "/matches", MatchController
+
     resources "/users", UserController
+    get "/users/:id/get", UserController, :get
+    get "/users/:id/get_all", UserController, :get_all
   end
 
   # Other scopes may use custom stacks.
