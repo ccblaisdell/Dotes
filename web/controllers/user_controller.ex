@@ -41,7 +41,7 @@ defmodule DotaQuantify.UserController do
     |> preload(:match)
     |> Repo.paginate(params)
 
-    pagination_links  = PaginationView.pagination_links(page, params)
+    pagination_links  = PaginationView.pagination_links(conn, page)
     pagination_window = PaginationView.pagination_window(page)
 
     render(conn, "show.html", user: user, players: page.entries, 

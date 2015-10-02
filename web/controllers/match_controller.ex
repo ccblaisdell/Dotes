@@ -14,7 +14,7 @@ defmodule DotaQuantify.MatchController do
     |> Ecto.Query.order_by([m], desc: m.start_time)
     |> Repo.paginate(params)
 
-    pagination_links = PaginationView.pagination_links(page, params)
+    pagination_links = PaginationView.pagination_links(conn, page)
     pagination_window = PaginationView.pagination_window(page)
 
     render(conn, "index.html", matches: page.entries, page_number: page.page_number,
