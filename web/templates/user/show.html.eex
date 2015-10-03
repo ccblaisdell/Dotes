@@ -88,8 +88,8 @@
   </li>
 
   <li>
-    <strong>Dotaid:</strong>
-    <%= @user.dotaid %>
+    <strong>ID:</strong>
+    <%= @user.id %>
   </li>
 
 </ul>

@@ -2,6 +2,7 @@ defmodule DotaQuantify.Match do
   use DotaQuantify.Web, :model
   alias DotaQuantify.Utils
   require Logger
+
   @primary_key {:id, :id, autogenerate: false}
 
   schema "matches" do
@@ -42,15 +43,15 @@ defmodule DotaQuantify.Match do
   with no validation performed.
   """
   def changeset(model, params \\ :empty) do
-    p = Utils.rename_keys(params, %{"match_id" => "id"})
+    params = Utils.rename_keys(params, %{"match_id" => "id"})
     model
-    |> cast(p, @required_fields, @optional_fields)
+    |> cast(params, @required_fields, @optional_fields)
     |> unique_constraint(:id, name: "matches_pkey")
   end
 
-  def get_for_user(dotaid) do
-    Logger.debug "Get match history for #{dotaid}"
-    history = DotaApi.history(dotaid)
+  def get_for_user(id) do
+    Logger.debug "Get match history for #{id}"
+    history = DotaApi.history(id)
 
     case history do
       {:error, reason} -> {:error, reason}
@@ -68,8 +69,8 @@ defmodule DotaQuantify.Match do
 
   end
 
-  def get_all_for_user(dotaid) do
-    ids = DotaApi.match_ids_stream_dotabuff(dotaid)
+  def get_all_for_user(id) do
+    ids = DotaApi.match_ids_stream_dotabuff(id)
     |> Stream.concat
     |> Stream.map(&async_match/1)
     |> Stream.map(&await_match/1)

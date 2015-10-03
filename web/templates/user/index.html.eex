@@ -10,7 +10,7 @@
       <th>Realname</th>
       <th>Steamid</th>
       <th>Timecreated</th>
-      <th>Dotaid</th>
+      <th>ID</th>
 
       <th></th>
     </tr>
@@ -25,7 +25,7 @@
       <td><%= user.realname %></td>
       <td><%= user.steamid %></td>
       <td><%= user.timecreated %></td>
-      <td><%= user.dotaid %></td>
+      <td><%= user.id %></td>
 
       <td class="text-right">
         <%= link "Show", to: user_path(@conn, :show, user), class: "btn btn-default btn-xs" %>

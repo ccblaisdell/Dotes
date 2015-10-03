@@ -1,10 +1,11 @@
 defmodule DotaQuantify.MatchController do
   use DotaQuantify.Web, :controller
 
-  import Ecto.Query, only: [order_by: 3]
+  import Ecto.Query
 
   alias DotaQuantify.Match
   alias DotaQuantify.Player
+  alias DotaQuantify.User
   alias DotaQuantify.PaginationView
 
   plug :scrub_params, "match" when action in [:create, :update]
@@ -108,4 +109,29 @@ defmodule DotaQuantify.MatchController do
     |> put_flash(:info, "All matches deleted successfully.")
     |> redirect(to: match_path(conn, :index))
   end
+
+  def get_recent(conn, _) do
+    count = from(u in User)
+    |> select([u], u.id)
+    |> Repo.all
+    |> Enum.map(&async_get_for_user/1)
+    |> Enum.map(&await_get_for_user/1)
+    |> Enum.to_list
+    |> Enum.sum
+
+    conn
+    |> put_flash(:info, "Fetched #{count} matches")
+    |> redirect(to: match_path(conn, :index))
+  end
+
+  defp async_get_for_user(id), do: Task.async(fn -> Match.get_for_user(id) end) 
+  defp await_get_for_user(task) do
+    try do
+      Task.await(task, 20000) |> handle_get_for_user
+    rescue
+      _ -> 0
+    end
+  end
+  defp handle_get_for_user({:ok, n}), do: n
+  defp handle_get_for_user({:error, _}), do: 0
 end

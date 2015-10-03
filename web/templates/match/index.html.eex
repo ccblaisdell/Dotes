@@ -1,6 +1,7 @@
 <h2>Listing matches</h2>
 
 <ul class="nav nav-pills">
+  <li><%= link "Get recent", to: match_path(@conn, :get_recent) %></li>
   <li><%= link "Delete all", to: match_path(@conn, :delete_all) %></li>
 </ul>
 

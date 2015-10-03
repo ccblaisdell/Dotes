@@ -1,5 +1,8 @@
 defmodule DotaQuantify.User do
   use DotaQuantify.Web, :model
+  alias DotaQuantify.Utils
+
+  @primary_key {:id, :id, autogenerate: false}
 
   schema "users" do
     field :avatar, :string
@@ -18,12 +21,11 @@ defmodule DotaQuantify.User do
     field :realname, :string
     field :steamid, :integer
     field :timecreated, :integer
-    field :dotaid, :integer
 
     has_many :players, DotaQuantify.Player
   end
 
-  @required_fields ~w(avatar avatarfull avatarmedium personaname profileurl steamid dotaid)
+  @required_fields ~w(avatar avatarfull avatarmedium personaname profileurl steamid id)
   @optional_fields ~w(communityvisibility lastlogoff loccountrycode locstatecode personastate personastateflags primaryclanid profilestate timecreated realname)
 
   @doc """
@@ -33,7 +35,9 @@ defmodule DotaQuantify.User do
   with no validation performed.
   """
   def changeset(model, params \\ :empty) do
+    params = Utils.rename_keys(params, %{"dotaid" => "id"})
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> unique_constraint(:id, name: "users_pkey")
   end
 end

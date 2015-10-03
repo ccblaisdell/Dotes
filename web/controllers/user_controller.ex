@@ -85,7 +85,7 @@ defmodule DotaQuantify.UserController do
   def get(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
 
-    case DotaQuantify.Match.get_for_user(user.dotaid) do
+    case DotaQuantify.Match.get_for_user(user.id) do
       {:ok, count} ->
         conn
         |> put_flash(:info, "Fetched #{count} matches")
@@ -100,7 +100,7 @@ defmodule DotaQuantify.UserController do
 
   def get_all(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
-    count = DotaQuantify.Match.get_all_for_user(user.dotaid)
+    count = DotaQuantify.Match.get_all_for_user(user.id)
 
     conn
     |> put_flash(:info, "Fetched #{count} matches")

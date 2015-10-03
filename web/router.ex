@@ -19,6 +19,7 @@ defmodule DotaQuantify.Router do
     get "/", PageController, :index
     
     get "/matches/delete_all", MatchController, :delete_all
+    get "/matches/get_recent", MatchController, :get_recent
     resources "/matches", MatchController
 
     resources "/users", UserController

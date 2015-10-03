@@ -19,7 +19,6 @@ defmodule DotaQuantify.Repo.Migrations.CreateUser do
       add :realname, :string
       add :steamid, :bigint
       add :timecreated, :integer
-      add :dotaid, :integer
     end
 
     alter table(:players) do
