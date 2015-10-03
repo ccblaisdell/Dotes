@@ -1,8 +1,10 @@
 defmodule DotaQuantify.Match do
   use DotaQuantify.Web, :model
+  alias DotaQuantify.Utils
+  require Logger
+  @primary_key {:id, :id, autogenerate: false}
 
   schema "matches" do
-    field :match_id, :integer
     field :seq_num, :integer
     field :start_time, :integer
     field :lobby_type, :integer
@@ -26,10 +28,10 @@ defmodule DotaQuantify.Match do
     has_many :players, DotaQuantify.Player, on_delete: :delete_all
   end
 
-  @required_fields ~w(match_id start_time lobby_type game_mode  duration
+  @required_fields ~w(start_time lobby_type game_mode duration
                       first_blood_time tower_status_dire tower_status_radiant
                       barracks_status_dire barracks_status_radiant
-                      human_players)
+                      human_players id)
   @optional_fields ~w(seq_num season positive_votes negative_votes
                       cluster league_id radiant_win)
 
@@ -40,20 +42,30 @@ defmodule DotaQuantify.Match do
   with no validation performed.
   """
   def changeset(model, params \\ :empty) do
+    p = Utils.rename_keys(params, %{"match_id" => "id"})
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(p, @required_fields, @optional_fields)
+    |> unique_constraint(:id, name: "matches_pkey")
   end
 
   def get_for_user(dotaid) do
-    {:ok, %{"matches" => summaries}} = DotaApi.history(dotaid)
+    Logger.debug "Get match history for #{dotaid}"
+    history = DotaApi.history(dotaid)
 
-    summaries
-    |> Enum.map(&Map.fetch(&1, "match_id"))
-    |> Enum.map(fn {:ok, id} -> async_match(id) end)
-    |> Enum.map(&await_match/1)
-    |> Enum.map(&DotaQuantify.MatchController.create_match/1)
+    case history do
+      {:error, reason} -> {:error, reason}
 
-    length(summaries)
+      {:ok, %{"matches" => summaries}} ->
+        # Pipe.pipe_with summaries
+        summaries
+        |> Enum.map(&Map.fetch(&1, "match_id"))
+        |> Enum.map(fn {:ok, id} -> async_match(id) end)
+        |> Enum.map(&await_match/1)
+        |> Enum.map(&DotaQuantify.MatchController.create_match/1)
+
+        {:ok, length(summaries)}
+    end
+
   end
 
   def get_all_for_user(dotaid) do
@@ -63,16 +75,20 @@ defmodule DotaQuantify.Match do
     |> Stream.map(&await_match/1)
     |> Stream.map(&DotaQuantify.MatchController.create_match/1)
     |> Enum.to_list
+    |> Enum.filter
 
     length(ids)
   end
 
   defp async_match(id) do
+    Logger.debug "Fetching match ##{id}"
     Task.async(fn -> DotaApi.match(id) end)
   end
 
   defp await_match(task) do
-    {:ok, details} = Task.await(task)
-    details
+    Task.await(task) |> handle_match
   end
+
+  defp handle_match({:ok, details}), do: details
+  defp handle_match({:error, reason}), do: {:error, reason}
 end

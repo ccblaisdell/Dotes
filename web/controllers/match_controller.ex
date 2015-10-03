@@ -41,6 +41,7 @@ defmodule DotaQuantify.MatchController do
     end
   end
 
+  def create_match({:error, reason}), do: nil
   def create_match(match_params) do
     changeset = Match.changeset(%Match{}, match_params)
 

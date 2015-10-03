@@ -39,16 +39,14 @@ defmodule DotaQuantify.PaginationView do
     link("<Prev", to: params)
   end
 
+  defp next_link(conn, %Scrivener.Page{page_number: page_number, total_pages: total_pages})
+       when page_number == total_pages, do: "Next>"
   defp next_link(conn, %Scrivener.Page{page_number: page_number, total_pages: total_pages}) do
-    if page_number == total_pages do
-      "Next>"
-    else
-      params = conn.query_string
-      |> parse_query_string
-      |> Map.update("page", "2", &( String.to_integer(&1) + 1 ))
-      |> map_to_query_string
-      link("Next>", to: params)
-    end
+    params = conn.query_string
+    |> parse_query_string
+    |> Map.update("page", "2", &( String.to_integer(&1) + 1 ))
+    |> map_to_query_string
+    link("Next>", to: params)
   end
 
   defp last_link(conn, %Scrivener.Page{page_number: page_number, total_pages: total_pages}) do

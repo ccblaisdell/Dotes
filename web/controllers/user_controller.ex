@@ -84,11 +84,18 @@ defmodule DotaQuantify.UserController do
 
   def get(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
-    count = DotaQuantify.Match.get_for_user(user.dotaid)
 
-    conn
-    |> put_flash(:info, "Fetched #{count} matches")
-    |> redirect(to: user_path(conn, :show, user))
+    case DotaQuantify.Match.get_for_user(user.dotaid) do
+      {:ok, count} ->
+        conn
+        |> put_flash(:info, "Fetched #{count} matches")
+        |> redirect(to: user_path(conn, :show, user))
+      {:error, _reason} ->
+        conn
+        |> put_flash(:info, "Match fetch failed")
+        |> redirect(to: user_path(conn, :show, user))
+    end
+
   end
 
   def get_all(conn, %{"id" => id}) do

@@ -21,11 +21,8 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 ## TODO
 - use match_id as primary key for match
 - user dotaid as primary key for user
-- paginate matches and players
-- batch get for individual users
-	- regular and dotabuff
 - batch get for all users
-- scrape dotabuff for match ids
+  - just dota api
 - automate fetching of hero and item images -> dota_api?
 - add new hero and items -> dota_api
 - update hero and item names -> dota_api

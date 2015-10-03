@@ -15,7 +15,7 @@
   <tbody>
 <%= for match <- @matches do %>
     <tr>
-      <td><%= match.match_id %></td>
+      <td><%= match.id %></td>
 
       <td class="text-right">
         <%= link "Show", to: match_path(@conn, :show, match), class: "btn btn-default btn-xs" %>
