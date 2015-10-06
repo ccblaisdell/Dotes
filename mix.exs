@@ -1,8 +1,8 @@
-defmodule DotaQuantify.Mixfile do
+defmodule Dotes.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :dota_quantify,
+    [app: :dotes,
      version: "0.0.1",
      elixir: "~> 1.1",
      elixirc_paths: elixirc_paths(Mix.env),
@@ -16,7 +16,7 @@ defmodule DotaQuantify.Mixfile do
   #
   # Type `mix help compile.app` for more information
   def application do
-    [mod: {DotaQuantify, []},
+    [mod: {Dotes, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
                     :phoenix_ecto, :postgrex, :httpoison,
                     :dota]]
@@ -37,6 +37,6 @@ defmodule DotaQuantify.Mixfile do
      {:phoenix_html, "~> 2.2"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:cowboy, "~> 1.0"},
-     {:dota, git: "https://github.com/ccblaisdell/dota-elixir.git", tag: "v0.0.11"}]
+     {:dota, git: "https://github.com/ccblaisdell/dota-elixir.git", tag: "v0.0.12"}]
   end
 end

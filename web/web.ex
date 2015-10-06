@@ -1,12 +1,12 @@
-defmodule DotaQuantify.Web do
+defmodule Dotes.Web do
   @moduledoc """
   A module that keeps using definitions for controllers,
   views and so on.
 
   This can be used in your application as:
 
-      use DotaQuantify.Web, :controller
-      use DotaQuantify.Web, :view
+      use Dotes.Web, :controller
+      use Dotes.Web, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -27,11 +27,11 @@ defmodule DotaQuantify.Web do
     quote do
       use Phoenix.Controller
 
-      alias DotaQuantify.Repo
+      alias Dotes.Repo
       import Ecto.Model
       import Ecto.Query, only: [from: 2]
 
-      import DotaQuantify.Router.Helpers
+      import Dotes.Router.Helpers
       require IEx
     end
   end
@@ -46,7 +46,7 @@ defmodule DotaQuantify.Web do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import DotaQuantify.Router.Helpers
+      import Dotes.Router.Helpers
     end
   end
 
@@ -60,7 +60,7 @@ defmodule DotaQuantify.Web do
     quote do
       use Phoenix.Channel
 
-      alias DotaQuantify.Repo
+      alias Dotes.Repo
       import Ecto.Model
       import Ecto.Query, only: [from: 2]
 

@@ -1,5 +1,5 @@
-defmodule DotaQuantify.PageControllerTest do
-  use DotaQuantify.ConnCase
+defmodule Dotes.PageControllerTest do
+  use Dotes.ConnCase
 
   test "GET /" do
     conn = get conn(), "/"

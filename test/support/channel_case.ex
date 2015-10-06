@@ -1,4 +1,4 @@
-defmodule DotaQuantify.ChannelCase do
+defmodule Dotes.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -20,19 +20,19 @@ defmodule DotaQuantify.ChannelCase do
       # Import conveniences for testing with channels
       use Phoenix.ChannelTest
 
-      alias DotaQuantify.Repo
+      alias Dotes.Repo
       import Ecto.Model
       import Ecto.Query, only: [from: 2]
 
 
       # The default endpoint for testing
-      @endpoint DotaQuantify.Endpoint
+      @endpoint Dotes.Endpoint
     end
   end
 
   setup tags do
     unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(DotaQuantify.Repo, [])
+      Ecto.Adapters.SQL.restart_test_transaction(Dotes.Repo, [])
     end
 
     :ok

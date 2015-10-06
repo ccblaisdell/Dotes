@@ -1,7 +1,7 @@
-defmodule DotaQuantify.MatchControllerTest do
-  use DotaQuantify.ConnCase
+defmodule Dotes.MatchControllerTest do
+  use Dotes.ConnCase
 
-  alias DotaQuantify.Match
+  alias Dotes.Match
   @valid_attrs %{match_id: "some content"}
   @invalid_attrs %{}
 

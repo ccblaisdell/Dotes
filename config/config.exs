@@ -22,12 +22,12 @@ if Mix.env == :dev do
 end
 
 # Configures the endpoint
-config :dota_quantify, DotaQuantify.Endpoint,
+config :dotes, Dotes.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
   secret_key_base: "qiZYvU2SL6L+CM/uiOeigy816Ix3x4J9vnBPHH6GKexCxh077szCh+hjSpzCxICL",
   render_errors: [accepts: ["html"]],
-  pubsub: [name: DotaQuantify.PubSub,
+  pubsub: [name: Dotes.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger

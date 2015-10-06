@@ -1,6 +1,6 @@
-defmodule DotaQuantify.User do
-  use DotaQuantify.Web, :model
-  alias DotaQuantify.Utils
+defmodule Dotes.User do
+  use Dotes.Web, :model
+  alias Dotes.Utils
 
   @primary_key {:id, :id, autogenerate: false}
 
@@ -22,7 +22,7 @@ defmodule DotaQuantify.User do
     field :steamid, :integer
     field :timecreated, :integer
 
-    has_many :players, DotaQuantify.Player
+    has_many :players, Dotes.Player
   end
 
   @required_fields ~w(avatar avatarfull avatarmedium personaname profileurl steamid id)

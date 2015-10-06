@@ -1,4 +1,4 @@
-defmodule DotaQuantify.ConnCase do
+defmodule Dotes.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -20,20 +20,20 @@ defmodule DotaQuantify.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
 
-      alias DotaQuantify.Repo
+      alias Dotes.Repo
       import Ecto.Model
       import Ecto.Query, only: [from: 2]
 
-      import DotaQuantify.Router.Helpers
+      import Dotes.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint DotaQuantify.Endpoint
+      @endpoint Dotes.Endpoint
     end
   end
 
   setup tags do
     unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(DotaQuantify.Repo, [])
+      Ecto.Adapters.SQL.restart_test_transaction(Dotes.Repo, [])
     end
 
     :ok

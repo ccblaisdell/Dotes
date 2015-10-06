@@ -1,3 +1,3 @@
-defmodule DotaQuantify.MatchView do
-  use DotaQuantify.Web, :view
+defmodule Dotes.MatchView do
+  use Dotes.Web, :view
 end

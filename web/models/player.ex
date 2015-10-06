@@ -1,5 +1,5 @@
-defmodule DotaQuantify.Player do
-  use DotaQuantify.Web, :model
+defmodule Dotes.Player do
+  use Dotes.Web, :model
 
   schema "players" do
     field :account_id, :integer
@@ -26,8 +26,8 @@ defmodule DotaQuantify.Player do
     field :tower_damage, :integer
     field :xp_per_min, :integer
 
-    belongs_to :match, DotaQuantify.Match
-    belongs_to :user, DotaQuantify.User
+    belongs_to :match, Dotes.Match
+    belongs_to :user, Dotes.User
   end
 
   @required_fields ~w(account_id assists deaths gold denies gold_per_min gold_spent hero_damage hero_healing hero_id item_0 item_1 item_2 item_3 item_4 item_5 kills last_hits leaver_status level player_slot tower_damage xp_per_min match_id)
@@ -47,7 +47,7 @@ defmodule DotaQuantify.Player do
   end
 
   def link_user(changeset) do
-    case DotaQuantify.MyUsers.get(changeset.model.account_id) do
+    case Dotes.MyUsers.get(changeset.model.account_id) do
       {:ok, user} ->
         put_change(changeset, :user_id, user.id)
       _ ->

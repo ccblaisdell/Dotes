@@ -14,7 +14,7 @@
 
 <ul>
   <%= for player <- @players do %>
-    <%= render DotaQuantify.PlayerView, "player.html", player: player, match: player.match, 
+    <%= render Dotes.PlayerView, "player.html", player: player, match: player.match, 
                                                        conn: @conn %>
   <% end %>
 </ul>

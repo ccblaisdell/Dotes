@@ -1,4 +1,4 @@
-# DotaQuantify
+# Dotes
 
 To start your Phoenix app:
 

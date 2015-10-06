@@ -1,6 +1,6 @@
-defmodule DotaQuantify.Match do
-  use DotaQuantify.Web, :model
-  alias DotaQuantify.Utils
+defmodule Dotes.Match do
+  use Dotes.Web, :model
+  alias Dotes.Utils
   require Logger
 
   @primary_key {:id, :id, autogenerate: false}
@@ -26,7 +26,7 @@ defmodule DotaQuantify.Match do
     field :cluster, :integer
     field :league_id, :integer
 
-    has_many :players, DotaQuantify.Player, on_delete: :delete_all
+    has_many :players, Dotes.Player, on_delete: :delete_all
   end
 
   @required_fields ~w(start_time lobby_type game_mode duration
@@ -62,7 +62,7 @@ defmodule DotaQuantify.Match do
         |> Enum.map(fn {:ok, id} -> id end)
         |> Enum.map(&async_match/1)
         |> Enum.map(&await_match/1)
-        |> Enum.map(&DotaQuantify.MatchController.create_match/1)
+        |> Enum.map(&Dotes.MatchController.create_match/1)
 
         {:ok, length(summaries)}
     end
@@ -74,7 +74,7 @@ defmodule DotaQuantify.Match do
     |> Stream.concat
     |> Stream.map(&async_match/1)
     |> Stream.map(&await_match/1)
-    |> Stream.map(&DotaQuantify.MatchController.create_match/1)
+    |> Stream.map(&Dotes.MatchController.create_match/1)
     |> Enum.to_list
     |> Enum.filter
 

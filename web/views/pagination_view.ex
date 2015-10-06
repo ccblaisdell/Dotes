@@ -1,5 +1,5 @@
-defmodule DotaQuantify.PaginationView do
-  use DotaQuantify.Web, :view
+defmodule Dotes.PaginationView do
+  use Dotes.Web, :view
   require IEx
 
   def pagination_links(conn, page) do

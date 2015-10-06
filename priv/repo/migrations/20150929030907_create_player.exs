@@ -1,4 +1,4 @@
-defmodule DotaQuantify.Repo.Migrations.CreatePlayer do
+defmodule Dotes.Repo.Migrations.CreatePlayer do
   use Ecto.Migration
 
   def change do

@@ -1,12 +1,12 @@
-defmodule DotaQuantify.MatchController do
-  use DotaQuantify.Web, :controller
+defmodule Dotes.MatchController do
+  use Dotes.Web, :controller
 
   import Ecto.Query
 
-  alias DotaQuantify.Match
-  alias DotaQuantify.Player
-  alias DotaQuantify.User
-  alias DotaQuantify.PaginationView
+  alias Dotes.Match
+  alias Dotes.Player
+  alias Dotes.User
+  alias Dotes.PaginationView
 
   plug :scrub_params, "match" when action in [:create, :update]
 

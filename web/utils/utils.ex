@@ -1,4 +1,4 @@
-defmodule DotaQuantify.Utils do
+defmodule Dotes.Utils do
   require IEx
 
   def rename_keys(:empty, _keys), do: :empty

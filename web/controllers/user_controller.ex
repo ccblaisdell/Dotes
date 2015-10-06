@@ -1,11 +1,11 @@
-defmodule DotaQuantify.UserController do
-  use DotaQuantify.Web, :controller
+defmodule Dotes.UserController do
+  use Dotes.Web, :controller
   require Logger
   import Ecto.Query
 
-  alias DotaQuantify.User
-  alias DotaQuantify.Player
-  alias DotaQuantify.PaginationView
+  alias Dotes.User
+  alias Dotes.Player
+  alias Dotes.PaginationView
 
   plug :scrub_params, "user" when action in [:create, :update]
 
@@ -19,8 +19,8 @@ defmodule DotaQuantify.UserController do
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"user" => %{"steamid" => steamid} = user_params}) do
-    {:ok, api_params} = Dota.profile(steamid)
+  def create(conn, %{"user" => %{"dotaid" => dotaid} = user_params}) do
+    {:ok, api_params} = dotaid |> Dota.dota_to_steam_id |> Dota.profile
     changeset = User.changeset(%User{}, Map.merge(user_params, api_params))
 
     case Repo.insert(changeset) do
@@ -85,7 +85,7 @@ defmodule DotaQuantify.UserController do
   def get(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
 
-    case DotaQuantify.Match.get_for_user(user.id) do
+    case Dotes.Match.get_for_user(user.id) do
       {:ok, count} ->
         conn
         |> put_flash(:info, "Fetched #{count} matches")
@@ -100,7 +100,7 @@ defmodule DotaQuantify.UserController do
 
   def get_all(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
-    count = DotaQuantify.Match.get_all_for_user(user.id)
+    count = Dotes.Match.get_all_for_user(user.id)
 
     conn
     |> put_flash(:info, "Fetched #{count} matches")

@@ -1,5 +1,5 @@
-defmodule DotaQuantify.UserView do
-  use DotaQuantify.Web, :view
+defmodule Dotes.UserView do
+  use Dotes.Web, :view
 
   def dotabuff_user_url(id), do: "http://dotabuff.com/players/#{id}"
 

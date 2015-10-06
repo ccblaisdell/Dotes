@@ -1,5 +1,5 @@
-defmodule DotaQuantify.MyUsers do
-	alias DotaQuantify.Repo
+defmodule Dotes.MyUsers do
+	alias Dotes.Repo
 	use GenServer
 
 	## Client API
@@ -23,7 +23,7 @@ defmodule DotaQuantify.MyUsers do
 	## Server Callbacks
 
 	def init(:ok) do
-		users = DotaQuantify.User 
+		users = Dotes.User 
 		|> Repo.all
 		|> Enum.map(fn user -> {user.id, %{personaname: user.personaname, avatar: user.avatar, id: user.id}} end)
 		|> Enum.into(%{})
