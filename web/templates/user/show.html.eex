@@ -1,104 +1,19 @@
-<h2>Show user</h2>
+<h2>
+  <%= tag "img", src: @user.avatar %>
+  <%= @user.personaname %>
+</h2>
 
 <ul class="nav nav-pills">
-  <li><%= link "Get matches for #{@user.personaname}", to: user_path(@conn, :get, @user) %></li>
-  <li><%= link "Get ALL matches for #{@user.personaname}", to: user_path(@conn, :get_all, @user) %></li>
+  <li><%= link "Dotabuff", to: dotabuff_user_url(@user.id) %></li>
+  <li><%= link "YASP", to: yasp_user_url(@user.id) %></li>
+  <li><%= link "Fetch recent", to: user_path(@conn, :get, @user) %></li>
+  <li><%= link "Fetch ALL", to: user_path(@conn, :get_all, @user) %></li>
 </ul>
 
-<ul>
-
-  <li>
-    <strong>Avatar:</strong>
-    <img src="<%= @user.avatar %>">
-  </li>
-
-  <li>
-    <strong>Avatarfull:</strong>
-    <img src="<%= @user.avatarfull %>">
-  </li>
-
-  <li>
-    <strong>Avatarmedium:</strong>
-    <img src="<%= @user.avatarmedium %>">
-  </li>
-
-  <li>
-    <strong>Communityvisibility:</strong>
-    <%= @user.communityvisibility %>
-  </li>
-
-  <li>
-    <strong>Lastlogoff:</strong>
-    <%= @user.lastlogoff %>
-  </li>
-
-  <li>
-    <strong>Loccountrycode:</strong>
-    <%= @user.loccountrycode %>
-  </li>
-
-  <li>
-    <strong>Locstatecode:</strong>
-    <%= @user.locstatecode %>
-  </li>
-
-  <li>
-    <strong>Personaname:</strong>
-    <%= @user.personaname %>
-  </li>
-
-  <li>
-    <strong>Personastate:</strong>
-    <%= @user.personastate %>
-  </li>
-
-  <li>
-    <strong>Personastateflags:</strong>
-    <%= @user.personastateflags %>
-  </li>
-
-  <li>
-    <strong>Primaryclanid:</strong>
-    <%= @user.primaryclanid %>
-  </li>
-
-  <li>
-    <strong>Profilestate:</strong>
-    <%= @user.profilestate %>
-  </li>
-
-  <li>
-    <strong>Profileurl:</strong>
-    <a href="<%= @user.profileurl %>"><%= @user.profileurl %></a>
-  </li>
-
-  <li>
-    <strong>Realname:</strong>
-    <%= @user.realname %>
-  </li>
-
-  <li>
-    <strong>Steamid:</strong>
-    <%= @user.steamid %>
-  </li>
-
-  <li>
-    <strong>Timecreated:</strong>
-    <%= @user.timecreated %>
-  </li>
-
-  <li>
-    <strong>ID:</strong>
-    <%= @user.id %>
-  </li>
-
-</ul>
-
-<h2>Players</h2>
+<h2>Matches</h2>
 
 <ul>
   <%= for player <- @players do %>
-    <%= player.match_id %>
     <%= render DotaQuantify.PlayerView, "player.html", player: player, match: player.match, 
                                                        conn: @conn %>
   <% end %>

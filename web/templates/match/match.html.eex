@@ -2,7 +2,7 @@
 
   <li>
     <strong>Match ID:</strong>
-    <%= @match.match_id %>
+    <%= @match.id %>
   </li>
   <li>
     <strong>Seq_num:</strong>
@@ -14,11 +14,11 @@
   </li>
   <li>
     <strong>Lobby_type:</strong>
-    <%= DotaApi.LobbyType.get @match.lobby_type %>
+    <%= Dota.LobbyType.get @match.lobby_type %>
   </li>
   <li>
     <strong>Game_mode:</strong>
-    <%= DotaApi.GameMode.get @match.game_mode %>
+    <%= Dota.GameMode.get @match.game_mode %>
   </li>
   <li>
     <strong>Radiant_win:</strong>

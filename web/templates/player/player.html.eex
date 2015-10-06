@@ -53,31 +53,31 @@
   </li>
   <li>
   	<strong>hero:</strong>
-		<%= DotaApi.Hero.get @player.hero_id %>
+		<%= Dota.Hero.localized_name @player.hero_id %>
   </li>
   <li>
   	<strong>item_0:</strong>
-		<%= DotaApi.Item.get @player.item_0 %>
+		<%= Dota.Item.localized_name @player.item_0 %>
   </li>
   <li>
   	<strong>item_1:</strong>
-		<%= DotaApi.Item.get @player.item_1 %>
+		<%= Dota.Item.localized_name @player.item_1 %>
   </li>
   <li>
   	<strong>item_2:</strong>
-		<%= DotaApi.Item.get @player.item_2 %>
+		<%= Dota.Item.localized_name @player.item_2 %>
   </li>
   <li>
   	<strong>item_3:</strong>
-		<%= DotaApi.Item.get @player.item_3 %>
+		<%= Dota.Item.localized_name @player.item_3 %>
   </li>
   <li>
   	<strong>item_4:</strong>
-		<%= DotaApi.Item.get @player.item_4 %>
+		<%= Dota.Item.localized_name @player.item_4 %>
   </li>
   <li>
   	<strong>item_5:</strong>
-		<%= DotaApi.Item.get @player.item_5 %>
+		<%= Dota.Item.localized_name @player.item_5 %>
   </li>
   <li>
   	<strong>kills:</strong>

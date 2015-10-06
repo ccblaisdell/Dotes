@@ -30,7 +30,7 @@ defmodule DotaQuantify.MatchController do
   end
 
   def create(conn, %{"match" => %{"match_id" => match_id}}) do
-    {:ok, match_params} = DotaApi.match(match_id)
+    {:ok, match_params} = Dota.match(match_id)
     result = create_match(match_params)
     case result do
       {:ok, _match} ->
@@ -116,6 +116,7 @@ defmodule DotaQuantify.MatchController do
     |> Repo.all
     |> Enum.map(&async_get_for_user/1)
     |> Enum.map(&await_get_for_user/1)
+    |> Enum.filter(fn response -> {:error, _} = response end)
     |> Enum.to_list
     |> Enum.sum
 
@@ -124,14 +125,16 @@ defmodule DotaQuantify.MatchController do
     |> redirect(to: match_path(conn, :index))
   end
 
-  defp async_get_for_user(id), do: Task.async(fn -> Match.get_for_user(id) end) 
-  defp await_get_for_user(task) do
-    try do
-      Task.await(task, 20000) |> handle_get_for_user
-    rescue
-      _ -> 0
-    end
+  defp async_get_for_user(id),   do: Task.async(fn -> Match.get_for_user(id) end)
+  defp await_get_for_user(task), do: wrap_await_for_user(task) |> handle_get_for_user
+
+  defp wrap_await_for_user(task) do
+    Task.await(task)
+  rescue
+    x in [RuntimeError] ->
+      {:error, task}
   end
+
   defp handle_get_for_user({:ok, n}), do: n
   defp handle_get_for_user({:error, _}), do: 0
 end

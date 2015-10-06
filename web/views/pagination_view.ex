@@ -84,6 +84,7 @@ defmodule DotaQuantify.PaginationView do
     ["showing ", page_start(page), " - ", page_end(page), " of ", total_entries(page)]
   end
 
+  defp page_start(%Scrivener.Page{total_entries: 0}), do: "0"
   defp page_start(page) do
     (page.page_number * page.page_size) - page.page_size + 1 |> Integer.to_string
   end

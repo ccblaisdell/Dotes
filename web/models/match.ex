@@ -51,16 +51,16 @@ defmodule DotaQuantify.Match do
 
   def get_for_user(id) do
     Logger.debug "Get match history for #{id}"
-    history = DotaApi.history(id)
+    history = Dota.history(id)
 
     case history do
       {:error, reason} -> {:error, reason}
 
       {:ok, %{"matches" => summaries}} ->
-        # Pipe.pipe_with summaries
         summaries
         |> Enum.map(&Map.fetch(&1, "match_id"))
-        |> Enum.map(fn {:ok, id} -> async_match(id) end)
+        |> Enum.map(fn {:ok, id} -> id end)
+        |> Enum.map(&async_match/1)
         |> Enum.map(&await_match/1)
         |> Enum.map(&DotaQuantify.MatchController.create_match/1)
 
@@ -70,7 +70,7 @@ defmodule DotaQuantify.Match do
   end
 
   def get_all_for_user(id) do
-    ids = DotaApi.match_ids_stream_dotabuff(id)
+    ids = Dota.Dotabuff.match_ids_stream(id)
     |> Stream.concat
     |> Stream.map(&async_match/1)
     |> Stream.map(&await_match/1)
@@ -83,7 +83,7 @@ defmodule DotaQuantify.Match do
 
   defp async_match(id) do
     Logger.debug "Fetching match ##{id}"
-    Task.async(fn -> DotaApi.match(id) end)
+    Task.async(fn -> Dota.match(id) end)
   end
 
   defp await_match(task) do

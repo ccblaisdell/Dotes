@@ -20,7 +20,7 @@ defmodule DotaQuantify.UserController do
   end
 
   def create(conn, %{"user" => %{"steamid" => steamid} = user_params}) do
-    {:ok, api_params} = DotaApi.profile(steamid)
+    {:ok, api_params} = Dota.profile(steamid)
     changeset = User.changeset(%User{}, Map.merge(user_params, api_params))
 
     case Repo.insert(changeset) do

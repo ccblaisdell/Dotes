@@ -4,7 +4,7 @@ defmodule DotaQuantify.Mixfile do
   def project do
     [app: :dota_quantify,
      version: "0.0.1",
-     elixir: "~> 1.0",
+     elixir: "~> 1.1",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
@@ -19,7 +19,7 @@ defmodule DotaQuantify.Mixfile do
     [mod: {DotaQuantify, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
                     :phoenix_ecto, :postgrex, :httpoison,
-                    :dota_api]]
+                    :dota]]
   end
 
   # Specifies which paths to compile per environment
@@ -37,7 +37,6 @@ defmodule DotaQuantify.Mixfile do
      {:phoenix_html, "~> 2.2"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:cowboy, "~> 1.0"},
-     {:dota_api, git: "git://github.com/ccblaisdell/dota-elixir.git", tag: "v0.0.7"},
-     {:pipe, git: "git://github.com/batate/elixir-pipes.git"}]
+     {:dota, git: "https://github.com/ccblaisdell/dota-elixir.git", tag: "v0.0.11"}]
   end
 end

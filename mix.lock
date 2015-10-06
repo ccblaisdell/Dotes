@@ -1,6 +1,7 @@
 %{"cowboy": {:hex, :cowboy, "1.0.3"},
   "cowlib": {:hex, :cowlib, "1.0.1"},
   "decimal": {:hex, :decimal, "1.1.0"},
+  "dota": {:git, "https://github.com/ccblaisdell/dota-elixir.git", "4f7355191f0f67ad388c971871dc55ca91aa6c60", [tag: "v0.0.11"]},
   "dota_api": {:git, "git://github.com/ccblaisdell/dota-elixir.git", "c483f0bdbc5ad2cedf0302cb31922cdfcdee5ea8", [tag: "v0.0.7"]},
   "ecto": {:hex, :ecto, "1.0.3"},
   "elixir-pipes": {:git, "git://github.com/batate/elixir-pipes.git", "0e046b108c5c758dd007a235d3adce89eeeab8d8", []},
