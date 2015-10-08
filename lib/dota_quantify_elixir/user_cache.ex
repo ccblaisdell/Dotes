@@ -1,4 +1,4 @@
-defmodule Dotes.MyUsers do
+defmodule Dotes.UserCache do
   alias Dotes.Repo
   use GenServer
 

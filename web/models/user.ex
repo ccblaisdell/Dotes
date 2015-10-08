@@ -45,12 +45,12 @@ defmodule Dotes.User do
   end
 
   def memorize_user(changeset) do
-    Dotes.MyUsers.add(changeset.model)
+    Dotes.UserCache.add(changeset.model)
     changeset
   end
 
   def forget_user(changeset) do
-    Dotes.MyUsers.remove(changeset.model.id)
+    Dotes.UserCache.remove(changeset.model.id)
     changeset
   end
 end
