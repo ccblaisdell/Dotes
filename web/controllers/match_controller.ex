@@ -42,18 +42,21 @@ defmodule Dotes.MatchController do
     end
   end
 
-  def create_match({:error, reason}), do: nil
+  def create_match({:error, _reason}), do: nil
   def create_match(match_params) do
     changeset = Match.changeset(%Match{}, match_params)
 
     result = Repo.insert(changeset)
     case result do
       {:ok, match} ->
+        Dotes.MatchCache.update(changeset.model.id, :success)
+
         for player <- match_params["players"] do
           player_params = player |> Enum.map(fn {k, v} -> {String.to_atom(k), v} end)
           player_changeset = match |> build(:players, player_params)
           Repo.insert(player_changeset)
         end
+        {:ok, match.id}
 
       _ -> nil
     end
@@ -104,6 +107,7 @@ defmodule Dotes.MatchController do
   def delete_all(conn, _) do
     Repo.delete_all(Match)
     Repo.delete_all(Player)
+    Dotes.MatchCache.clear()
 
     conn
     |> put_flash(:info, "All matches deleted successfully.")
@@ -116,7 +120,6 @@ defmodule Dotes.MatchController do
     |> Repo.all
     |> Enum.map(&async_get_for_user/1)
     |> Enum.map(&await_get_for_user/1)
-    |> Enum.filter(fn response -> {:error, _} = response end)
     |> Enum.to_list
     |> Enum.sum
 
@@ -129,7 +132,7 @@ defmodule Dotes.MatchController do
   defp await_get_for_user(task), do: wrap_await_for_user(task) |> handle_get_for_user
 
   defp wrap_await_for_user(task) do
-    Task.await(task)
+    Task.await(task, 30_000)
   rescue
     x in [RuntimeError] ->
       {:error, task}

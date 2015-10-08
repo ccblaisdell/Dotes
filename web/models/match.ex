@@ -36,6 +36,9 @@ defmodule Dotes.Match do
   @optional_fields ~w(seq_num season positive_votes negative_votes
                       cluster league_id radiant_win)
 
+  after_insert :memorize_match
+  after_delete :forget_match
+
   @doc """
   Creates a changeset based on the `model` and `params`.
 
@@ -57,14 +60,15 @@ defmodule Dotes.Match do
       {:error, reason} -> {:error, reason}
 
       {:ok, %{"matches" => summaries}} ->
-        summaries
+        fetched = summaries
         |> Enum.map(&Map.fetch(&1, "match_id"))
         |> Enum.map(fn {:ok, id} -> id end)
         |> Enum.map(&async_match/1)
         |> Enum.map(&await_match/1)
         |> Enum.map(&Dotes.MatchController.create_match/1)
+        |> Enum.filter(&(&1))
 
-        {:ok, length(summaries)}
+        {:ok, length(fetched)}
     end
 
   end
@@ -76,20 +80,38 @@ defmodule Dotes.Match do
     |> Stream.map(&await_match/1)
     |> Stream.map(&Dotes.MatchController.create_match/1)
     |> Enum.to_list
-    |> Enum.filter
+    |> Enum.filter(&(&1))
 
     length(ids)
   end
 
   defp async_match(id) do
-    Logger.debug "Fetching match ##{id}"
-    Task.async(fn -> Dota.match(id) end)
+    case Dotes.MatchCache.get(id) do
+      {:ok, :success} ->
+        Logger.debug "Skipping match ##{id}"
+        {:error, "Already exists"}
+      _ ->
+        Logger.debug "Fetching match ##{id}"
+        Dotes.MatchCache.add(id)
+        Task.async(fn -> Dota.match(id) end)
+    end
   end
 
+  defp await_match({:error, _reason} = response), do: response
   defp await_match(task) do
-    Task.await(task) |> handle_match
+    Task.await(task, 10_000) |> handle_match
   end
 
   defp handle_match({:ok, details}), do: details
   defp handle_match({:error, reason}), do: {:error, reason}
+
+  defp memorize_match(changeset) do
+    Dotes.MatchCache.update(changeset.model.id, :success)
+    changeset
+  end
+
+  defp forget_match(changeset) do
+    Dotes.MatchCache.remove(changeset.model.id)
+    changeset
+  end
 end

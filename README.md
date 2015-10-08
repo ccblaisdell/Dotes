@@ -20,18 +20,17 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 
 ## API TODO
 - http://dev.dota2.com/showthread.php?t=58317
-- automate fetching of hero and item images -> dota_api?
-- add new hero and items -> dota_api
-- update hero and item names -> dota_api
+- automate fetching of hero and item images
+  - http://elixir-lang.readthedocs.org/en/new-guides/mix/3/
+  - https://github.com/phoenixframework/phoenix/blob/v1.0.3/lib/mix/tasks/phoenix.gen.model.ex
+  - https://github.com/phoenixframework/phoenix/blob/v1.0.3/priv/templates/phoenix.gen.model/model.ex
+  - mix dota.items
+  - mix dota.heroes # make this auto update heroes from the API?
+  - mix dota.images --path ./priv/static/images
 
 ## QUANTIFY TODO
 - nice display of players and matches
-- genserver to hold recent match ids so we don't refetch them
-	- maybe some smarter way to keep from stepping on toes
-	- maybe a server to manage multiuser batch operations
 - try using prepared statements for match and player creation for faster inserts
-- rename? Dota (API module) & Dotes?
-- insert matches and players into repo from Dota.History, then update them from Dota.Match
-  - faster initial load, (1 less api call)
-  - slower overall (2x inserts)
-  - or consider not fetching full matches at all?
+- replace async matches with a custom implmentation http://www.theerlangelist.com/2015/07/beyond-taskasync.html
+  - right if any api call times out, the entire process crashes
+  - we want to allow some to succeed and some to fail
