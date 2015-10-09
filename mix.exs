@@ -38,7 +38,7 @@ defmodule Dotes.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:cowboy, "~> 1.0"},
      {:timex, "~> 0.19"},
-     # {:dota, git: "https://github.com/ccblaisdell/dota-elixir.git", tag: "v0.0.12"}]
-     {:dota, path: "../dota"}]
+     {:dota, git: "https://github.com/ccblaisdell/dota-elixir.git", tag: "v0.0.13"}]
+     # {:dota, path: "../dota"}]
   end
 end
