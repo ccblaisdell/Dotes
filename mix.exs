@@ -19,7 +19,7 @@ defmodule Dotes.Mixfile do
     [mod: {Dotes, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
                     :phoenix_ecto, :postgrex, :httpoison,
-                    :dota]]
+                    :dota, :tzdata]]
   end
 
   # Specifies which paths to compile per environment
@@ -37,6 +37,8 @@ defmodule Dotes.Mixfile do
      {:phoenix_html, "~> 2.2"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:cowboy, "~> 1.0"},
-     {:dota, git: "https://github.com/ccblaisdell/dota-elixir.git", tag: "v0.0.12"}]
+     {:timex, "~> 0.19"},
+     # {:dota, git: "https://github.com/ccblaisdell/dota-elixir.git", tag: "v0.0.12"}]
+     {:dota, path: "../dota"}]
   end
 end

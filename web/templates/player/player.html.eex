@@ -1,110 +1,32 @@
-<ul>
-
-  <li>
-    <strong>USER:</strong>
+<tr>
+  <td>
+    <%= hero_img(@player.hero_id) %>
     <%= if @player.user_id do %>
-      <%= link "user", to: user_path(@conn, :show, @player.user_id) %>
+      <%= link @player.user.personaname, to: user_path(@conn, :show, @player.user_id) %>
+    <% else %>
+      <%= Dota.Hero.localized_name(@player.hero_id) %>
     <% end %>
-  </li>
-
-  <li>
-    <strong>MATCH:</strong>
+  </td>
+  <%= content_tag :td, Integer.to_string(@player.level) %>
+  <%= content_tag :td, Enum.join([@player.kills, @player.deaths, @player.assists], "/") %>
+  <%= content_tag :td, Integer.to_string(@player.gold) %>
+  <%= content_tag :td, Integer.to_string(@player.gold_spent) %>
+  <%= content_tag :td, Integer.to_string(@player.last_hits) %>
+  <%= content_tag :td, Integer.to_string(@player.denies) %>
+  <%= content_tag :td, Integer.to_string(@player.gold_per_min) %>
+  <%= content_tag :td, Integer.to_string(@player.xp_per_min) %>
+  <%= content_tag :td, Integer.to_string(@player.hero_damage) %>
+  <%= content_tag :td, Integer.to_string(@player.hero_healing) %>
+  <%= content_tag :td, Integer.to_string(@player.tower_damage) %>
+  <td>
+    <%= item_img(@player.item_0, width: "43", height: "32") %>
+    <%= item_img(@player.item_1, width: "43", height: "32") %>
+    <%= item_img(@player.item_2, width: "43", height: "32") %>
+    <%= item_img(@player.item_3, width: "43", height: "32") %>
+    <%= item_img(@player.item_4, width: "43", height: "32") %>
+    <%= item_img(@player.item_5, width: "43", height: "32") %>
+  </td>
+  <td>
     <%= link "match", to: match_path(@conn, :show, @match.id) %>
-  </li>
-  <li>
-    <strong>WON?</strong>
-    <%= Dotes.Player.won?(@player, @match) %>
-  </li>
-  <li>
-    <strong>account_id:</strong>
-    <%= @player.account_id %>
-  </li>
-  <li>
-  	<strong>assists:</strong>
-		<%= @player.assists %>
-  </li>
-  <li>
-  	<strong>deaths:</strong>
-		<%= @player.deaths %>
-  </li>
-  <li>
-  	<strong>gold:</strong>
-		<%= @player.gold %>
-  </li>
-  <li>
-  	<strong>denies:</strong>
-		<%= @player.denies %>
-  </li>
-  <li>
-  	<strong>gold_per_min:</strong>
-		<%= @player.gold_per_min %>
-  </li>
-  <li>
-  	<strong>gold_spent:</strong>
-		<%= @player.gold_spent %>
-  </li>
-  <li>
-  	<strong>hero_damage:</strong>
-		<%= @player.hero_damage %>
-  </li>
-  <li>
-  	<strong>hero_healing:</strong>
-		<%= @player.hero_healing %>
-  </li>
-  <li>
-  	<strong>hero:</strong>
-		<%= Dota.Hero.localized_name @player.hero_id %>
-  </li>
-  <li>
-  	<strong>item_0:</strong>
-		<%= Dota.Item.localized_name @player.item_0 %>
-  </li>
-  <li>
-  	<strong>item_1:</strong>
-		<%= Dota.Item.localized_name @player.item_1 %>
-  </li>
-  <li>
-  	<strong>item_2:</strong>
-		<%= Dota.Item.localized_name @player.item_2 %>
-  </li>
-  <li>
-  	<strong>item_3:</strong>
-		<%= Dota.Item.localized_name @player.item_3 %>
-  </li>
-  <li>
-  	<strong>item_4:</strong>
-		<%= Dota.Item.localized_name @player.item_4 %>
-  </li>
-  <li>
-  	<strong>item_5:</strong>
-		<%= Dota.Item.localized_name @player.item_5 %>
-  </li>
-  <li>
-  	<strong>kills:</strong>
-		<%= @player.kills %>
-  </li>
-  <li>
-  	<strong>last_hits:</strong>
-		<%= @player.last_hits %>
-  </li>
-  <li>
-  	<strong>leaver_status:</strong>
-		<%= @player.leaver_status %>
-  </li>
-  <li>
-  	<strong>level:</strong>
-		<%= @player.level %>
-  </li>
-  <li>
-  	<strong>player_slot:</strong>
-		<%= @player.player_slot %>
-  </li>
-  <li>
-  	<strong>tower_damage:</strong>
-		<%= @player.tower_damage %>
-  </li>
-  <li>
-  	<strong>xp_per_min:</strong>
-		<%= @player.xp_per_min %>
-  </li>
-</ul>
+  </td>
+</tr>

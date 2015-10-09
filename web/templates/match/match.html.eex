@@ -10,7 +10,11 @@
   </li>
   <li>
     <strong>Start_time:</strong>
-    <%= @match.start_time %>
+    <%= format_time @match.start_time %>
+  </li>
+  <li>
+    <strong>Ended:</strong>
+    <%= Dotes.Match.end_time(@match) |> format_time %>
   </li>
   <li>
     <strong>Lobby_type:</strong>

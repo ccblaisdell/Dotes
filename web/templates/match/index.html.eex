@@ -8,15 +8,24 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Match</th>
-
+      <th></th>
+      <th>Ended</th>
+      <th>Team</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
 <%= for match <- @matches do %>
     <tr>
-      <td><%= match.id %></td>
+      <td><%= won? match %></td>
+      <td>
+        <%= Dotes.Match.end_time(match) |> format_time %>
+      </td>
+      <td>
+        <%= for player <- match.players |> Enum.filter(&Dotes.Player.cached?(&1)) |> Enum.sort(&Dotes.Player.by_slot(&1, &2)) do %>
+          <%= tag "img", src: player.user.avatar %>
+        <% end %>
+      </td>
 
       <td class="text-right">
         <%= link "Show", to: match_path(@conn, :show, match), class: "btn btn-default btn-xs" %>

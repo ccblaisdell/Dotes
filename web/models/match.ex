@@ -114,4 +114,8 @@ defmodule Dotes.Match do
     Dotes.MatchCache.remove(changeset.model.id)
     changeset
   end
+
+  def end_time(match) do
+    match.start_time + match.duration
+  end
 end

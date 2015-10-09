@@ -13,6 +13,7 @@ defmodule Dotes.MatchController do
   def index(conn, params) do
     page = Match
     |> Ecto.Query.order_by([m], desc: m.start_time)
+    |> Ecto.Query.preload([:players, players: :user])
     |> Repo.paginate(params)
 
     pagination_links = PaginationView.pagination_links(conn, page)
@@ -65,11 +66,14 @@ defmodule Dotes.MatchController do
   end
 
   def show(conn, %{"id" => id}) do
-    # match = Match |> Repo.get!(id) |> Repo.preload [:players]
     match = Match 
     |> Repo.get!(id) 
     |> Repo.preload([:players, players: :user])
-    render(conn, "show.html", match: match)
+
+    radiant_team = Player.radiant_team(match.players)
+    dire_team = Player.dire_team(match.players)
+
+    render(conn, "show.html", match: match, radiant_team: radiant_team, dire_team: dire_team)
   end
 
   def edit(conn, %{"id" => id}) do

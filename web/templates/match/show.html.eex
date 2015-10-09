@@ -1,14 +1,43 @@
-<h2>Show match</h2>
+<h2><%= won?(@match) %>: <%= @match.id %></h2>
 
 <%= render "match.html", match: @match %>
 
 <h2>Players</h2>
 
-<ul>
-  <%= for player <- @match.players do %>
-    <%= render Dotes.PlayerView, "player.html", player: player, match: @match, 
-                                                       conn: @conn %>
-  <% end %>
+<table>
+  <thead>
+    <tr>
+      <th>Radiant</th>
+      <%= content_tag :th, "lvl" %>
+      <%= content_tag :th, "kda" %>
+      <%= content_tag :th, "g" %>
+      <%= content_tag :th, "gs" %>
+      <%= content_tag :th, "lh" %>
+      <%= content_tag :th, "d" %>
+      <%= content_tag :th, "gpm" %>
+      <%= content_tag :th, "xpm" %>
+      <%= content_tag :th, "hd" %>
+      <%= content_tag :th, "hh" %>
+      <%= content_tag :th, "td" %>
+      <%= content_tag :th, "" %>
+      <%= content_tag :th, "items" %>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for player <- @radiant_team do %>
+      <%= render Dotes.PlayerView, "player.html", player: player, match: @match, 
+                                                         conn: @conn %>
+    <% end %>
+  </tbody>
+  <thead>
+    <tr><th>Dire</th></tr>
+  </thead>
+  <tbody>
+    <%= for player <- @dire_team do %>
+      <%= render Dotes.PlayerView, "player.html", player: player, match: @match, 
+                                                         conn: @conn %>
+    <% end %>
+  </tbody>
 </ul>
 
 <%= link "Edit", to: match_path(@conn, :edit, @match) %>

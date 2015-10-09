@@ -62,4 +62,20 @@ defmodule Dotes.Player do
   def won?(player, match) do
     radiant?(player) and match.radiant_win
   end
+
+  def radiant_team(players) do
+    Enum.filter(players, fn p -> radiant?(p) end)
+  end
+
+  def dire_team(players) do
+    Enum.filter(players, fn p -> !radiant?(p) end)
+  end
+
+  def cached?(player) do
+    !!player.user_id
+  end
+
+  def by_slot(p1, p2) do
+    p1.player_slot < p2.player_slot
+  end
 end

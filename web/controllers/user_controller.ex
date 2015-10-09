@@ -38,7 +38,7 @@ defmodule Dotes.UserController do
     user = Repo.get!(User, id)
     page = Player
     |> where([p], p.user_id == ^id)
-    |> preload(:match)
+    |> preload([:match, :user])
     |> Repo.paginate(params)
 
     pagination_links  = PaginationView.pagination_links(conn, page)

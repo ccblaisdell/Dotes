@@ -12,12 +12,14 @@
 
 <h2>Matches</h2>
 
-<ul>
-  <%= for player <- @players do %>
-    <%= render Dotes.PlayerView, "player.html", player: player, match: player.match, 
-                                                       conn: @conn %>
-  <% end %>
-</ul>
+<table>
+  <tbody>
+    <%= for player <- @players do %>
+      <%= render Dotes.PlayerView, "player.html", player: player, match: player.match,
+                                                  user: @user, conn: @conn %>
+    <% end %>
+  </tbody>
+</table>
 
 <p>
   <%= content_tag :div, @pagination_window, class: "pull-right" %>
