@@ -1,0 +1,29 @@
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.match {
+  padding: 15px;
+  background: #fff;
+  min-width: 360px;
+  margin-bottom: 15px;
+}
+
+.match-header {
+  margin-bottom: 5px;
+}
+
+.match-outcome {
+  
+}
+
+.match-players {
+  
+}
+
+.match-team {}
+.match-duration {}
+.match-end {}
+.match-links {}

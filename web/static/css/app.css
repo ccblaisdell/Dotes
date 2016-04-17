@@ -43,7 +43,7 @@ form.link, form.button {
 /* Customize container */
 @media (min-width: 768px) {
   .container {
-    max-width: 730px;
+    /*max-width: 730px;*/
   }
 }
 .container-narrow > hr {
@@ -77,4 +77,10 @@ form.link, form.button {
   .jumbotron {
     border-bottom: 0;
   }
+}
+
+
+/* My own stuff to refactor out later */
+html, body {
+  background: #eee;
 }

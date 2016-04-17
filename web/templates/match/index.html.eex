@@ -5,44 +5,51 @@
   <li><%= link "Delete all", to: match_path(@conn, :delete_all) %></li>
 </ul>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Ended</th>
-      <th>Team</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
+<div class="">
 <%= for match <- @matches do %>
-    <tr>
-      <td><%= won? match %></td>
-      <td>
-        <%= Dotes.Match.end_time(match) |> format_time %>
-      </td>
-      <td>
+  <div class="match">
+    <div class="flex match-header">
+      <%= content_tag :span, won?(match), class: "match-outcome" %>
+      <div class="match-players">
         <%= for player <- match.players |> Enum.filter(&Dotes.Player.cached?(&1)) |> Enum.sort(&Dotes.Player.by_slot(&1, &2)) do %>
+          <%= Dotes.PlayerView.hero_img(player.hero_id) %>
           <%= tag "img", src: player.user.avatar %>
+          <%= player.user.personaname %>
+          <%= Dota.Hero.localized_name(player.hero_id) %>
+          <%= content_tag :span, Enum.join([player.kills, player.deaths, player.assists], "/") %>
+          <%= content_tag :span, "GPM: " <> Integer.to_string(player.gold_per_min) %>
+          <%= content_tag :span, "XPM: " <> Integer.to_string(player.xp_per_min) %>
+          <div>
+            <%= Dotes.PlayerView.item_img(player.item_0, width: "43", height: "32") %>
+            <%= Dotes.PlayerView.item_img(player.item_1, width: "43", height: "32") %>
+            <%= Dotes.PlayerView.item_img(player.item_2, width: "43", height: "32") %>
+            <%= Dotes.PlayerView.item_img(player.item_3, width: "43", height: "32") %>
+            <%= Dotes.PlayerView.item_img(player.item_4, width: "43", height: "32") %>
+            <%= Dotes.PlayerView.item_img(player.item_5, width: "43", height: "32") %>
+          </div>
         <% end %>
-      </td>
+      </div>
+    </div>
 
-      <td class="text-right">
-        <%= link "Show", to: match_path(@conn, :show, match), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: match_path(@conn, :edit, match), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: match_path(@conn, :delete, match), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-      </td>
-    </tr>
+    <div class="flex match-footer">
+      <div class="match-duration">
+        <%= match.duration |> minutes %>
+      </div>
+      <%= content_tag :div,
+        (Dotes.Match.end_time(match) |> format_time_long),
+        class: "match-end",
+        title: Dotes.Match.end_time(match) %>
+    </div>
+
+    <div class="match-links">
+      <%= link "Dotabuff", to: dotabuff_match_url(match.id) %>
+      <%= link "YASP", to: yasp_match_url(match.id) %>
+      <%= link "Show", to: match_path(@conn, :show, match) %>
+      <%= link "Edit", to: match_path(@conn, :edit, match) %>
+      <%= link "Delete", to: match_path(@conn, :delete, match), method: :delete, data: [confirm: "Are you sure?"] %>
+    </div>
+  </div>
 <% end %>
-  </tbody>
-  <tfoot>
-    <tr>
-      <td colspan=2>
-        <%= content_tag :div, @pagination_links, class: "pull-left" %>
-        <%= content_tag :div, @pagination_window, class: "pull-right" %>
-      </td>
-    </tr>
-  </tfoot>
-</table>
+</div>
 
 <%= link "New match", to: match_path(@conn, :new) %>

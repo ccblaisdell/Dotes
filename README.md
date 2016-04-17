@@ -27,3 +27,4 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 - replace async matches with a custom implmentation http://www.theerlangelist.com/2015/07/beyond-taskasync.html
   - if any api call times out, the entire process crashes
   - we want to allow some to succeed and some to fail
+- access match_cache directly instead of through genserver for better concurrency
