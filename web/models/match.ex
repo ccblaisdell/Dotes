@@ -36,8 +36,6 @@ defmodule Dotes.Match do
   @optional_fields ~w(seq_num season positive_votes negative_votes
                       cluster league_id radiant_win)
 
-  after_insert :memorize_match
-  after_delete :forget_match
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -105,13 +103,13 @@ defmodule Dotes.Match do
   defp handle_match({:ok, details}), do: details
   defp handle_match({:error, reason}), do: {:error, reason}
 
-  defp memorize_match(changeset) do
+  defp memorize(changeset) do
     Dotes.MatchCache.update(changeset.model.id, :success)
     changeset
   end
 
-  defp forget_match(changeset) do
-    Dotes.MatchCache.remove(changeset.model.id)
+  defp forget(id) do
+    Dotes.MatchCache.remove(id)
     changeset
   end
 

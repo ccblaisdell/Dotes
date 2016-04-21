@@ -22,9 +22,10 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 - http://dev.dota2.com/showthread.php?t=58317
 
 ## QUANTIFY TODO
+- let postgresql do its own IDs again. restore match_id as a String (match ids are getting too big for integers)
 - nice display of players and matches
 - try using prepared statements for match and player creation for faster inserts
-- replace async matches with a custom implmentation http://www.theerlangelist.com/2015/07/beyond-taskasync.html
+- replace async matches with a custom implementation http://www.theerlangelist.com/2015/07/beyond-taskasync.html
   - if any api call times out, the entire process crashes
   - we want to allow some to succeed and some to fail
 - access match_cache directly instead of through genserver for better concurrency

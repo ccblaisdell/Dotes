@@ -30,12 +30,12 @@ defmodule Dotes.Mixfile do
   #
   # Type `mix help deps` for examples and options
   defp deps do
-    [{:phoenix, "~> 1.0"},
-     {:phoenix_ecto, "~> 1.2"},
-     {:postgrex, "~> 0.9"},
-     {:scrivener, "~> 1.0"},
-     {:phoenix_html, "~> 2.2"},
+    [{:phoenix, "~> 1.1"},
+     {:postgrex, "~> 0.11.0"},
+     {:phoenix_ecto, "~> 2.0"},
+     {:phoenix_html, "~> 2.3"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
+     {:scrivener, "~> 1.0"},
      {:cowboy, "~> 1.0"},
      {:timex, "~> 0.19"},
      {:dota, git: "https://github.com/ccblaisdell/dota-elixir.git", tag: "v0.0.14"}]

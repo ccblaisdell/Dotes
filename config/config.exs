@@ -17,7 +17,7 @@ if Mix.env == :dev do
            [key, value] = String.split(line, "=")
            System.put_env(key, value)
          end)
-    {:error, _} ->
+    {:error, _} -> nil
   end
 end
 

@@ -1,8 +1,6 @@
 defmodule Dotes.MatchController do
   use Dotes.Web, :controller
 
-  import Ecto.Query
-
   alias Dotes.Match
   alias Dotes.Player
   alias Dotes.User
@@ -12,8 +10,8 @@ defmodule Dotes.MatchController do
 
   def index(conn, params) do
     page = Match
-    |> Ecto.Query.order_by([m], desc: m.start_time)
-    |> Ecto.Query.preload([:players, players: :user])
+    |> order_by([m], desc: m.start_time)
+    |> preload([:players, players: :user])
     |> Repo.paginate(params)
 
     pagination_links = PaginationView.pagination_links(conn, page)
@@ -50,11 +48,11 @@ defmodule Dotes.MatchController do
     result = Repo.insert(changeset)
     case result do
       {:ok, match} ->
-        Dotes.MatchCache.update(changeset.model.id, :success)
+        Match.memorize(changeset)
 
         for player <- match_params["players"] do
           player_params = player |> Enum.map(fn {k, v} -> {String.to_atom(k), v} end)
-          player_changeset = match |> build(:players, player_params)
+          player_changeset = match |> build_assoc(:players, player_params)
           Repo.insert(player_changeset)
         end
         {:ok, match.id}
@@ -102,6 +100,7 @@ defmodule Dotes.MatchController do
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(match)
+    Match.forget(id)
 
     conn
     |> put_flash(:info, "Match deleted successfully.")

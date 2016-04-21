@@ -1,7 +1,6 @@
 defmodule Dotes.UserController do
   use Dotes.Web, :controller
   require Logger
-  import Ecto.Query
 
   alias Dotes.User
   alias Dotes.Player
@@ -25,6 +24,7 @@ defmodule Dotes.UserController do
 
     case Repo.insert(changeset) do
       {:ok, _user} ->
+        User.memorize(changeset.model)
         conn
         |> put_flash(:info, "User created successfully.")
         |> redirect(to: user_path(conn, :index))
@@ -37,7 +37,7 @@ defmodule Dotes.UserController do
 
     user = Repo.get!(User, id)
     page = Player
-    |> where([p], p.user_id == ^id)
+    |> where(user_id: ^id)
     |> preload([:match, :user])
     |> Repo.paginate(params)
 
@@ -76,6 +76,7 @@ defmodule Dotes.UserController do
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(user)
+    User.forget(id)
 
     conn
     |> put_flash(:info, "User deleted successfully.")

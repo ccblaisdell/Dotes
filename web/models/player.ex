@@ -33,8 +33,6 @@ defmodule Dotes.Player do
   @required_fields ~w(account_id assists deaths gold denies gold_per_min gold_spent hero_damage hero_healing hero_id item_0 item_1 item_2 item_3 item_4 item_5 kills last_hits leaver_status level player_slot tower_damage xp_per_min match_id)
   @optional_fields ~w(user_id)
 
-  before_insert :link_user
-
   @doc """
   Creates a changeset based on the `model` and `params`.
 
@@ -44,6 +42,7 @@ defmodule Dotes.Player do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> link_user
   end
 
   def link_user(changeset) do

@@ -28,9 +28,6 @@ defmodule Dotes.User do
   @required_fields ~w(avatar avatarfull avatarmedium personaname profileurl steamid id)
   @optional_fields ~w(communityvisibility lastlogoff loccountrycode locstatecode personastate personastateflags primaryclanid profilestate timecreated realname)
 
-  after_insert :memorize_user
-  after_delete :forget_user
-
   @doc """
   Creates a changeset based on the `model` and `params`.
 
@@ -44,13 +41,11 @@ defmodule Dotes.User do
     |> unique_constraint(:id, name: "users_pkey")
   end
 
-  def memorize_user(changeset) do
+  def memorize(changeset) do
     Dotes.UserCache.add(changeset.model)
-    changeset
   end
 
-  def forget_user(changeset) do
-    Dotes.UserCache.remove(changeset.model.id)
-    changeset
+  def forget(id) do
+    Dotes.UserCache.remove(id)
   end
 end
