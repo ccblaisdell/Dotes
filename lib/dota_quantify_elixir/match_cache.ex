@@ -4,6 +4,8 @@ defmodule Dotes.MatchCache do
   use GenServer
 
   @name :match_table
+  
+  # Key on match_id, store {id, status}
 
   ## Client API
 
@@ -11,20 +13,20 @@ defmodule Dotes.MatchCache do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
-  def add(id) do
-    GenServer.cast(__MODULE__, {:add, id})
+  def add(match_id, id) do
+    GenServer.cast(__MODULE__, {:add, match_id, id})
   end
 
-  def update(id, status) do
-    GenServer.cast(__MODULE__, {:update, id, status})
+  def update(match_id, id, status) do
+    GenServer.cast(__MODULE__, {:update, match_id, id, status})
   end
 
-  def get(id) do
-    GenServer.call(__MODULE__, {:get, id})
+  def get(match_id) do
+    GenServer.call(__MODULE__, {:get, match_id})
   end
 
-  def remove(id) do
-    GenServer.cast(__MODULE__, {:remove, id})
+  def remove(match_id) do
+    GenServer.cast(__MODULE__, {:remove, match_id})
   end
 
   def clear() do
@@ -36,31 +38,31 @@ defmodule Dotes.MatchCache do
   def init(:ok) do
     table = :ets.new(@name, [:set, :protected])
     users = Dotes.Match
-    |> Ecto.Query.select([m], m.id)
+    |> Ecto.Query.select([m], {m.match_id, m.id})
     |> Repo.all
-    |> Enum.each(fn id -> :ets.insert(table, {id, :success}) end)
+    |> Enum.each(fn {match_id, id} -> :ets.insert(table, { match_id, {id, :success} }) end)
     {:ok, table}
   end
 
-  def handle_cast({:add, id}, table) do
-    :ets.insert(table, {id, :pending})
+  def handle_cast({:add, match_id, id}, table) do
+    :ets.insert(table, {match_id, {id, :pending}})
     {:noreply, table}
   end
 
-  def handle_cast({:update, id, status}, table) do
-    :ets.insert(table, {id, status})
+  def handle_cast({:update, match_id, id, status}, table) do
+    :ets.insert(table, {match_id, {id, status}})
     {:noreply, table}
   end
 
-  def handle_call({:get, id}, _from, table) do
-    case :ets.lookup(table, id) do
-      [{^id, status}] -> {:reply, {:ok, status}, table}
+  def handle_call({:get, match_id}, _from, table) do
+    case :ets.lookup(table, match_id) do
+      [{^match_id, {id, status}}] -> {:reply, {:ok, id, status}, table}
       [] -> {:reply, :none, table}
     end
   end
 
-  def handle_cast({:remove, id}, table) do
-    :ets.delete(table, id)
+  def handle_cast({:remove, match_id}, table) do
+    :ets.delete(table, match_id)
     {:noreply, table}
   end
 

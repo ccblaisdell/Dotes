@@ -1,9 +1,11 @@
 defmodule Dotes.Match do
   use Dotes.Web, :model
   alias Dotes.Utils
+  alias Dotes.MatchCache
   require Logger
-
-  @primary_key {:id, :id, autogenerate: false}
+  
+  # TODO: figure out how to index on match_id
+  # TODO: write migration for new id and match_id fields
 
   schema "matches" do
     field :seq_num, :integer
@@ -32,7 +34,7 @@ defmodule Dotes.Match do
   @required_fields ~w(start_time lobby_type game_mode duration
                       first_blood_time tower_status_dire tower_status_radiant
                       barracks_status_dire barracks_status_radiant
-                      human_players id)
+                      human_players match_id)
   @optional_fields ~w(seq_num season positive_votes negative_votes
                       cluster league_id radiant_win)
 
@@ -44,15 +46,17 @@ defmodule Dotes.Match do
   with no validation performed.
   """
   def changeset(model, params \\ :empty) do
-    params = Utils.rename_keys(params, %{"match_id" => "id"})
     model
     |> cast(params, @required_fields, @optional_fields)
-    |> unique_constraint(:id, name: "matches_pkey")
+    |> unique_constraint(:match_id)
   end
 
-  def get_for_user(id) do
-    Logger.debug "Get match history for #{id}"
-    history = Dota.history(id)
+  @doc """
+  Gets recent matches for a user via the steam API
+  """
+  def get_for_user(user_id) do
+    Logger.debug "Get match history for #{user_id}"
+    history = Dota.history(user_id)
 
     case history do
       {:error, reason} -> {:error, reason}
@@ -60,7 +64,7 @@ defmodule Dotes.Match do
       {:ok, %{"matches" => summaries}} ->
         fetched = summaries
         |> Enum.map(&Map.fetch(&1, "match_id"))
-        |> Enum.map(fn {:ok, id} -> id end)
+        |> Enum.map(fn {:ok, match_id} -> match_id end)
         |> Enum.map(&async_match/1)
         |> Enum.map(&await_match/1)
         |> Enum.map(&Dotes.MatchController.create_match/1)
@@ -71,8 +75,12 @@ defmodule Dotes.Match do
 
   end
 
-  def get_all_for_user(id) do
-    ids = Dota.Dotabuff.match_ids_stream(id)
+  @doc """
+  Gets all matches for a user by scraping dotabuff for match_ids and then 
+  requesting match details from the steam API.
+  """
+  def get_all_for_user(user_id) do
+    match_ids = Dota.Dotabuff.match_ids_stream(user_id)
     |> Stream.concat
     |> Stream.map(&async_match/1)
     |> Stream.map(&await_match/1)
@@ -80,18 +88,19 @@ defmodule Dotes.Match do
     |> Enum.to_list
     |> Enum.filter(&(&1))
 
-    length(ids)
+    # NOTE: should be a tuple? {:ok, length(match_ids)}
+    length(match_ids)
   end
 
-  defp async_match(id) do
-    case Dotes.MatchCache.get(id) do
-      {:ok, :success} ->
-        Logger.debug "Skipping match ##{id}"
+  defp async_match(match_id) do
+    case MatchCache.get(match_id) do
+      {:ok, _id, :success} ->
+        Logger.debug "Skipping match ##{match_id}"
         {:error, "Already exists"}
       _ ->
-        Logger.debug "Fetching match ##{id}"
-        Dotes.MatchCache.add(id)
-        Task.async(fn -> Dota.match(id) end)
+        Logger.debug "Fetching match ##{match_id}"
+        MatchCache.add(match_id)
+        Task.async(fn -> Dota.match(match_id) end)
     end
   end
 
@@ -104,16 +113,22 @@ defmodule Dotes.Match do
   defp handle_match({:error, reason}), do: {:error, reason}
 
   defp memorize(changeset) do
-    Dotes.MatchCache.update(changeset.model.id, :success)
+    MatchCache.update(changeset.model.match_id, changeset.model.id, :success)
     changeset
   end
 
-  defp forget(id) do
-    Dotes.MatchCache.remove(id)
+  defp forget(match_id) do
+    MatchCache.remove(match_id)
     changeset
   end
 
   def end_time(match) do
     match.start_time + match.duration
+  end
+end
+
+defimpl Phoenix.Param, for: Dotes.Match do
+  def to_param(%{match_id: match_id}) do
+    "#{match_id}"
   end
 end

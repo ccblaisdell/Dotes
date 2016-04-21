@@ -1,4 +1,4 @@
-<h2><%= won?(@match) %>: <%= @match.id %></h2>
+<h2><%= won?(@match) %>: <%= @match.match_id %></h2>
 
 <%= render "match.html", match: @match %>
 

@@ -27,6 +27,6 @@
     <%= item_img(@player.item_5, width: "43", height: "32") %>
   </td>
   <td>
-    <%= link "match", to: match_path(@conn, :show, @match.id) %>
+    <%= link "match", to: match_path(@conn, :show, @match) %>
   </td>
 </tr>

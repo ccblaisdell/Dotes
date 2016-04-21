@@ -4,6 +4,7 @@ defmodule Dotes.MatchController do
   alias Dotes.Match
   alias Dotes.Player
   alias Dotes.User
+  alias Dotes.MatchCache
   alias Dotes.PaginationView
 
   plug :scrub_params, "match" when action in [:create, :update]
@@ -50,6 +51,7 @@ defmodule Dotes.MatchController do
       {:ok, match} ->
         Match.memorize(changeset)
 
+        # TODO: bulk insert players when we upgrade to Ecto 2.0
         for player <- match_params["players"] do
           player_params = player |> Enum.map(fn {k, v} -> {String.to_atom(k), v} end)
           player_changeset = match |> build_assoc(:players, player_params)
@@ -63,7 +65,8 @@ defmodule Dotes.MatchController do
     result
   end
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, %{"id" => match_id}) do
+    {:ok, id, _status} = MatchCache.get(match_id)
     match = Match 
     |> Repo.get!(id) 
     |> Repo.preload([:players, players: :user])
@@ -74,13 +77,15 @@ defmodule Dotes.MatchController do
     render(conn, "show.html", match: match, radiant_team: radiant_team, dire_team: dire_team)
   end
 
-  def edit(conn, %{"id" => id}) do
+  def edit(conn, %{"id" => match_id}) do
+    {:ok, id, _status} = MatchCache.get(match_id)
     match = Repo.get!(Match, id)
     changeset = Match.changeset(match)
     render(conn, "edit.html", match: match, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "match" => match_params}) do
+  def update(conn, %{"id" => match_id, "match" => match_params}) do
+    {:ok, id, _status} = MatchCache.get(match_id)
     match = Repo.get!(Match, id)
     changeset = Match.changeset(match, match_params)
 
@@ -94,7 +99,8 @@ defmodule Dotes.MatchController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"id" => match_id}) do
+    {:ok, id, _status} = MatchCache.get(match_id)
     match = Repo.get!(Match, id)
 
     # Here we use delete! (with a bang) because we expect
@@ -110,7 +116,7 @@ defmodule Dotes.MatchController do
   def delete_all(conn, _) do
     Repo.delete_all(Match)
     Repo.delete_all(Player)
-    Dotes.MatchCache.clear()
+    MatchCache.clear()
 
     conn
     |> put_flash(:info, "All matches deleted successfully.")

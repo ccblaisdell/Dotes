@@ -1,8 +1,12 @@
 <ul>
 
   <li>
-    <strong>Match ID:</strong>
+    <strong>ID:</strong>
     <%= @match.id %>
+  </li>
+  <li>
+    <strong>Match_ID:</strong>
+    <%= @match.match_id %>
   </li>
   <li>
     <strong>Seq_num:</strong>

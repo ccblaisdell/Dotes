@@ -38,8 +38,8 @@ defmodule Dotes.MatchView do
     end
   end
 
-  def dotabuff_match_url(id), do: "http://dotabuff.com/matches/#{id}"
+  def dotabuff_match_url(match_id), do: "http://dotabuff.com/matches/#{match_id}"
 
-  def yasp_match_url(id), do: "http://yasp.co/matches/#{id}"
+  def yasp_match_url(match_id), do: "http://yasp.co/matches/#{match_id}"
 
 end

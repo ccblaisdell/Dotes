@@ -42,8 +42,8 @@
     </div>
 
     <div class="match-links">
-      <%= link "Dotabuff", to: dotabuff_match_url(match.id) %>
-      <%= link "YASP", to: yasp_match_url(match.id) %>
+      <%= link "Dotabuff", to: dotabuff_match_url(match.match_id) %>
+      <%= link "YASP", to: yasp_match_url(match.match_id) %>
       <%= link "Show", to: match_path(@conn, :show, match) %>
       <%= link "Edit", to: match_path(@conn, :edit, match) %>
       <%= link "Delete", to: match_path(@conn, :delete, match), method: :delete, data: [confirm: "Are you sure?"] %>
