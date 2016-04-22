@@ -8,6 +8,7 @@ defmodule Dotes.Match do
   # TODO: write migration for new id and match_id fields
 
   schema "matches" do
+    field :match_id, :string
     field :seq_num, :integer
     field :start_time, :integer
     field :lobby_type, :integer
@@ -46,6 +47,9 @@ defmodule Dotes.Match do
   with no validation performed.
   """
   def changeset(model, params \\ :empty) do
+    if params != :empty do
+      params = Map.update!(params, "match_id", &to_string/1)
+    end
     model
     |> cast(params, @required_fields, @optional_fields)
     |> unique_constraint(:match_id)
@@ -112,14 +116,13 @@ defmodule Dotes.Match do
   defp handle_match({:ok, details}), do: details
   defp handle_match({:error, reason}), do: {:error, reason}
 
-  defp memorize(changeset) do
+  def memorize(changeset) do
     MatchCache.update(changeset.model.match_id, changeset.model.id, :success)
     changeset
   end
 
-  defp forget(match_id) do
+  def forget(match_id) do
     MatchCache.remove(match_id)
-    changeset
   end
 
   def end_time(match) do

@@ -42,7 +42,7 @@ defmodule Dotes.User do
   end
 
   def memorize(changeset) do
-    Dotes.UserCache.add(changeset.model)
+    Dotes.UserCache.add(changeset)
   end
 
   def forget(id) do

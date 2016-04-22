@@ -50,6 +50,7 @@ defmodule Dotes.Web do
       use Phoenix.HTML
 
       import Dotes.Router.Helpers
+      require IEx
     end
   end
 

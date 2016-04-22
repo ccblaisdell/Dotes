@@ -46,7 +46,7 @@ defmodule Dotes.Player do
   end
 
   def link_user(changeset) do
-    case Dotes.UserCache.get(changeset.model.account_id) do
+    case Dotes.UserCache.get(changeset.changes.account_id) do
       {:ok, user} ->
         put_change(changeset, :user_id, user.id)
       _ ->

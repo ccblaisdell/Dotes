@@ -53,8 +53,7 @@ defmodule Dotes.MatchController do
 
         # TODO: bulk insert players when we upgrade to Ecto 2.0
         for player <- match_params["players"] do
-          player_params = player |> Enum.map(fn {k, v} -> {String.to_atom(k), v} end)
-          player_changeset = match |> build_assoc(:players, player_params)
+          player_changeset = match |> build_assoc(:players) |> Player.changeset(player)
           Repo.insert(player_changeset)
         end
         {:ok, match.id}

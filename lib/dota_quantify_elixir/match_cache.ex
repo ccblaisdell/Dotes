@@ -13,8 +13,8 @@ defmodule Dotes.MatchCache do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
-  def add(match_id, id) do
-    GenServer.cast(__MODULE__, {:add, match_id, id})
+  def add(match_id) do
+    GenServer.cast(__MODULE__, {:add, match_id})
   end
 
   def update(match_id, id, status) do
@@ -44,8 +44,8 @@ defmodule Dotes.MatchCache do
     {:ok, table}
   end
 
-  def handle_cast({:add, match_id, id}, table) do
-    :ets.insert(table, {match_id, {id, :pending}})
+  def handle_cast({:add, match_id}, table) do
+    :ets.insert(table, {match_id, {nil, :pending}})
     {:noreply, table}
   end
 
