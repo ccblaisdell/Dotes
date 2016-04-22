@@ -38,9 +38,7 @@ exports.config = {
   // Phoenix paths configuration
   paths: {
     // Dependencies and current project directories to watch
-    watched: ["deps/phoenix/web/static",
-              "deps/phoenix_html/web/static",
-              "web/static", "test/static"],
+    watched: ["web/static", "test/static"],
 
     // Where to compile files to
     public: "priv/static"
@@ -61,6 +59,7 @@ exports.config = {
   },
 
   npm: {
-    enabled: true
+    enabled: true,
+    whitelist: ["phoenix", "phoenix_html"]
   }
 };
