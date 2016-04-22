@@ -59,12 +59,17 @@ defmodule Dotes.Match do
   Gets recent matches for a user via the steam API
   """
   def get_for_user(user_id) do
-    Logger.debug "Get match history for #{user_id}"
+    {:ok, %{personaname: name}} = Dotes.UserCache.get(user_id)
+    Logger.debug "Get match history for #{name}"
     history = Dota.history(user_id)
 
     case history do
-      {:error, reason} -> {:error, reason}
+      {:error, {:ok, response}} -> 
+        Logger.error "Match history unavailable for #{name}. #{inspect(response)}}"
+        {:error, response}
 
+      {:error, reason} -> {:error, reason}
+      
       {:ok, %{"matches" => summaries}} ->
         fetched = summaries
         |> Enum.map(&Map.fetch(&1, "match_id"))
