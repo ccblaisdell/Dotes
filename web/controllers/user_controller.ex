@@ -101,7 +101,7 @@ defmodule Dotes.UserController do
 
   def get_all(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
-    count = Dotes.Match.get_all_for_user(user.id)
+    {:ok, count} = Dotes.Match.get_all_for_user(user.id)
 
     conn
     |> put_flash(:info, "Fetched #{count} matches")

@@ -76,7 +76,6 @@ defmodule Dotes.Match do
         |> Enum.map(fn {:ok, match_id} -> match_id end)
         |> Enum.map(&async_match/1)
         |> Enum.map(&await_match/1)
-        |> Enum.map(&Dotes.MatchController.create_match/1)
         |> Enum.filter(&(&1))
 
         {:ok, length(fetched)}
@@ -93,32 +92,32 @@ defmodule Dotes.Match do
     |> Stream.concat
     |> Stream.map(&async_match/1)
     |> Stream.map(&await_match/1)
-    |> Stream.map(&Dotes.MatchController.create_match/1)
     |> Enum.to_list
     |> Enum.filter(&(&1))
 
-    # NOTE: should be a tuple? {:ok, length(match_ids)}
-    length(match_ids)
+    {:ok, length(match_ids)}
   end
 
   defp async_match(match_id) do
     case MatchCache.get(match_id) do
       {:ok, _id, :success} ->
-        Logger.debug "Skipping match ##{match_id}"
+        Logger.debug "Skipping match #{match_id}"
         {:error, "Already exists"}
       _ ->
-        Logger.debug "Fetching match ##{match_id}"
+        Logger.debug "Fetching match #{match_id}"
         MatchCache.add(match_id)
         Task.async(fn -> Dota.match(match_id) end)
     end
   end
 
-  defp await_match({:error, _reason} = response), do: response
+  defp await_match({:error, _reason}), do: false
   defp await_match(task) do
     Task.await(task, 10_000) |> handle_match
   end
 
-  defp handle_match({:ok, details}), do: details
+  defp handle_match({:ok, details}) do
+    Dotes.MatchController.create_match(details)
+  end
   defp handle_match({:error, reason}), do: {:error, reason}
 
   def memorize(changeset) do
