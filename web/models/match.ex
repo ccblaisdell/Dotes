@@ -120,9 +120,8 @@ defmodule Dotes.Match do
   end
   defp handle_match({:error, reason}), do: {:error, reason}
 
-  def memorize(changeset) do
-    MatchCache.update(changeset.model.match_id, changeset.model.id, :success)
-    changeset
+  def memorize(match) do
+    MatchCache.update(match.match_id, match.id, :success)
   end
 
   def forget(match_id) do

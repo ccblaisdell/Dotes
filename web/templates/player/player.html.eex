@@ -7,17 +7,17 @@
       <%= Dota.Hero.localized_name(@player.hero_id) %>
     <% end %>
   </td>
-  <%= content_tag :td, Integer.to_string(@player.level) %>
+  <%= content_tag :td, to_string(@player.level) %>
   <%= content_tag :td, Enum.join([@player.kills, @player.deaths, @player.assists], "/") %>
-  <%= content_tag :td, Integer.to_string(@player.gold) %>
-  <%= content_tag :td, Integer.to_string(@player.gold_spent) %>
-  <%= content_tag :td, Integer.to_string(@player.last_hits) %>
-  <%= content_tag :td, Integer.to_string(@player.denies) %>
-  <%= content_tag :td, Integer.to_string(@player.gold_per_min) %>
-  <%= content_tag :td, Integer.to_string(@player.xp_per_min) %>
-  <%= content_tag :td, Integer.to_string(@player.hero_damage) %>
-  <%= content_tag :td, Integer.to_string(@player.hero_healing) %>
-  <%= content_tag :td, Integer.to_string(@player.tower_damage) %>
+  <%= content_tag :td, to_string(@player.gold) %>
+  <%= content_tag :td, to_string(@player.gold_spent) %>
+  <%= content_tag :td, to_string(@player.last_hits) %>
+  <%= content_tag :td, to_string(@player.denies) %>
+  <%= content_tag :td, to_string(@player.gold_per_min) %>
+  <%= content_tag :td, to_string(@player.xp_per_min) %>
+  <%= content_tag :td, to_string(@player.hero_damage) %>
+  <%= content_tag :td, to_string(@player.hero_healing) %>
+  <%= content_tag :td, to_string(@player.tower_damage) %>
   <td>
     <%= item_img(@player.item_0, width: "43", height: "32") %>
     <%= item_img(@player.item_1, width: "43", height: "32") %>

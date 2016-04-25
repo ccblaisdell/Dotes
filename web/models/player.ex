@@ -30,8 +30,9 @@ defmodule Dotes.Player do
     belongs_to :user, Dotes.User
   end
 
-  @required_fields ~w(account_id assists deaths gold denies gold_per_min gold_spent hero_damage hero_healing hero_id item_0 item_1 item_2 item_3 item_4 item_5 kills last_hits leaver_status level player_slot tower_damage xp_per_min match_id)
-  @optional_fields ~w(user_id)
+  @required_fields ~w(account_id assists deaths denies gold_per_min hero_id item_0 item_1 item_2 item_3 item_4 item_5 kills last_hits leaver_status level player_slot xp_per_min match_id)
+  # Some fields are no longer included in very old matches
+  @optional_fields ~w(user_id gold gold_spent hero_damage hero_healing tower_damage)
 
   @doc """
   Creates a changeset based on the `model` and `params`.

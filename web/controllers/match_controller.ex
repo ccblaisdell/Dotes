@@ -49,7 +49,7 @@ defmodule Dotes.MatchController do
     result = Repo.insert(changeset)
     case result do
       {:ok, match} ->
-        Match.memorize(changeset)
+        Match.memorize(match)
 
         # TODO: bulk insert players when we upgrade to Ecto 2.0
         for player <- match_params["players"] do
