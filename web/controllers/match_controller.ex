@@ -30,12 +30,18 @@ defmodule Dotes.MatchController do
   end
 
   def create(conn, %{"match" => %{"match_id" => match_id}}) do
-    {:ok, match_params} = Dota.match(match_id)
-    result = create_match(match_params)
+    result = case Dota.match(match_id) do
+      {:ok, match_params} -> create_match(match_params)
+      {:error, reason} -> {:error, :no_match, reason}
+    end
     case result do
       {:ok, _match} ->
         conn
         |> put_flash(:info, "Match created successfully.")
+        |> redirect(to: match_path(conn, :index))
+      {:error, :no_match, reason} ->
+        conn
+        |> put_flash(:error, reason)
         |> redirect(to: match_path(conn, :index))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)

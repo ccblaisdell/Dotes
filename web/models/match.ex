@@ -3,13 +3,10 @@ defmodule Dotes.Match do
   alias Dotes.Utils
   alias Dotes.MatchCache
   require Logger
-  
-  # TODO: figure out how to index on match_id
-  # TODO: write migration for new id and match_id fields
 
   schema "matches" do
     field :match_id, :string
-    field :seq_num, :integer
+    field :seq_num, :integer # TODO: Change to string
     field :start_time, :integer
     field :lobby_type, :integer
     field :game_mode, :integer

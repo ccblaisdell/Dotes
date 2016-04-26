@@ -2,7 +2,7 @@ defmodule Dotes.Player do
   use Dotes.Web, :model
 
   schema "players" do
-    field :account_id, :integer
+    field :account_id, :integer # TODO: Change to string
     field :assists, :integer
     field :deaths, :integer
     field :gold, :integer
@@ -46,6 +46,7 @@ defmodule Dotes.Player do
     |> link_user
   end
 
+  def link_user(%{valid?: false} = changeset), do: changeset
   def link_user(changeset) do
     case Dotes.UserCache.get(changeset.changes.account_id) do
       {:ok, user} ->

@@ -29,3 +29,10 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
   - if any api call times out, the entire process crashes
   - we want to allow some to succeed and some to fail
 - access match_cache directly instead of through genserver for better concurrency
+
+## Bugs
+- we count some unfetched matches as successful
+  - try Fetch All on Hoplyte's user page. After all his matches are fetched, it 
+    continues to say 4 were found on successive attempts. These matches were in
+    practice lobbies. 4334243, 4305066, 4221977, 4190037
+

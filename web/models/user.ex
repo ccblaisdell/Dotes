@@ -19,7 +19,7 @@ defmodule Dotes.User do
     field :profilestate, :integer
     field :profileurl, :string
     field :realname, :string
-    field :steamid, :integer
+    field :steamid, :integer # TODO: change to string
     field :timecreated, :integer
 
     has_many :players, Dotes.Player
