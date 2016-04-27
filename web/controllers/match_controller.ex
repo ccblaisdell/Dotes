@@ -50,6 +50,24 @@ defmodule Dotes.MatchController do
 
   def create_match({:error, _reason}), do: nil
   def create_match(match_params) do
+    # Current flow:
+    # 1. match changeset
+    # 2. insert match
+    # 3. if success, for each player...
+    #   a. player changeset
+    #   b. insert player
+    
+    # Ideal flow:
+    # Make all changesets before inserting anything
+    # Reduce inserts from 11 to 2
+    # 1. match changeset
+    # 2. if valid?, then for each player... (else log and move on)
+    #   a. player changeset
+    # 3. if all player changesets valid? (else log and move on)
+    # 4. insert match
+    # 5. bulk insert players
+    # If anything breaks, delete, log and move on
+    
     changeset = Match.changeset(%Match{}, match_params)
 
     result = Repo.insert(changeset)
@@ -129,6 +147,9 @@ defmodule Dotes.MatchController do
   end
 
   def get_recent(conn, _) do
+    # For large groups like this, should we bulk insert matches as well as players?
+    # Probably not?
+    
     count = from(u in User)
     |> select([u], u.id)
     |> Repo.all

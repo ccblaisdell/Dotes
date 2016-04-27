@@ -20,11 +20,23 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 
 ## API TODO
 - http://dev.dota2.com/showthread.php?t=58317
+- retry API calls that fail
+  - or at least log them
 
-## QUANTIFY TODO
-- let postgresql do its own IDs again. restore match_id as a String (match ids are getting too big for integers)
+## DOTES TODO
+do something so when we get lists of things, we know how many were skipped, succeeded, failed.
+log these numbers
+log the failures individually
+maybe keep the failed ones somewhere so we can retry them
+retry failed ones automatically?
+if player insertion fails, delete the match
+maybe just get all player changesets before inserting match
+be able to insert bot players?
+
+- handle API calls that fail
 - nice display of players and matches
 - try using prepared statements for match and player creation for faster inserts
+- upgrade to ecto 2.0 for batch insertion of players (and matches?)
 - replace async matches with a custom implementation http://www.theerlangelist.com/2015/07/beyond-taskasync.html
   - if any api call times out, the entire process crashes
   - we want to allow some to succeed and some to fail
