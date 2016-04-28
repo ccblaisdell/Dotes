@@ -50,42 +50,30 @@ defmodule Dotes.MatchController do
 
   def create_match({:error, _reason}), do: nil
   def create_match(match_params) do
-    # Current flow:
-    # 1. match changeset
-    # 2. insert match
-    # 3. if success, for each player...
-    #   a. player changeset
-    #   b. insert player
-    
-    # Ideal flow:
-    # Make all changesets before inserting anything
-    # Reduce inserts from 11 to 2
-    # 1. match changeset
-    # 2. if valid?, then for each player... (else log and move on)
-    #   a. player changeset
-    # 3. if all player changesets valid? (else log and move on)
-    # 4. insert match
-    # 5. bulk insert players
-    # If anything breaks, delete, log and move on
-    
     changeset = Match.changeset(%Match{}, match_params)
-
     result = Repo.insert(changeset)
+    
     case result do
       {:ok, match} ->
-        Match.memorize(match)
-
-        # TODO: bulk insert players when we upgrade to Ecto 2.0
-        for player <- match_params["players"] do
-          player_changeset = match |> build_assoc(:players) |> Player.changeset(player)
-          Repo.insert(player_changeset)
-        end
-        {:ok, match.id}
-
-      _ -> nil
+        insert_players(match, match_params["players"])
+      _ -> 
+        Logger.error("Match #{match_params["match_id"]} is invalid")
     end
-
+    
     result
+  end
+  
+  defp insert_players(match, players) do
+    player_changesets = Enum.map players, fn player ->
+      match |> build_assoc(:players) |> Player.changeset(player)
+    end
+    case Enum.all?(player_changesets, fn pc -> pc.valid? end) do
+      true ->
+        Enum.each(player_changesets, fn pc -> Repo.insert(pc) end)
+      _ ->
+        Logger.error("Match #{match.id}: not all players are valid")
+        Repo.delete(match)
+    end
   end
 
   def show(conn, %{"id" => match_id}) do

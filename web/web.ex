@@ -36,6 +36,7 @@ defmodule Dotes.Web do
 
       import Dotes.Router.Helpers
       require IEx
+      require Logger
     end
   end
 
