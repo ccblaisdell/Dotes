@@ -30,49 +30,21 @@ defmodule Dotes.MatchController do
   end
 
   def create(conn, %{"match" => %{"match_id" => match_id}}) do
-    result = case Dota.match(match_id) do
-      {:ok, match_params} -> create_match(match_params)
-      {:error, reason} -> {:error, :no_match, reason}
-    end
-    case result do
+    case Match.create(match_id) do
       {:ok, _match} ->
         conn
         |> put_flash(:info, "Match created successfully.")
-        |> redirect(to: match_path(conn, :index))
+        |> redirect(to: match_path(conn, :show, match_id))
       {:error, :no_match, reason} ->
         conn
         |> put_flash(:error, reason)
         |> redirect(to: match_path(conn, :index))
+      {:error, :fetched, reason} ->
+        conn
+        |> put_flash(:error, reason)
+        |> redirect(to: match_path(conn, :show, match_id))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
-    end
-  end
-
-  def create_match({:error, _reason}), do: nil
-  def create_match(match_params) do
-    changeset = Match.changeset(%Match{}, match_params)
-    result = Repo.insert(changeset)
-    
-    case result do
-      {:ok, match} ->
-        insert_players(match, match_params["players"])
-      _ -> 
-        Logger.error("Match #{match_params["match_id"]} is invalid")
-    end
-    
-    result
-  end
-  
-  defp insert_players(match, players) do
-    player_changesets = Enum.map players, fn player ->
-      match |> build_assoc(:players) |> Player.changeset(player)
-    end
-    case Enum.all?(player_changesets, fn pc -> pc.valid? end) do
-      true ->
-        Enum.each(player_changesets, fn pc -> Repo.insert(pc) end)
-      _ ->
-        Logger.error("Match #{match.id}: not all players are valid")
-        Repo.delete(match)
     end
   end
 
@@ -135,9 +107,6 @@ defmodule Dotes.MatchController do
   end
 
   def get_recent(conn, _) do
-    # For large groups like this, should we bulk insert matches as well as players?
-    # Probably not?
-    
     count = from(u in User)
     |> select([u], u.id)
     |> Repo.all

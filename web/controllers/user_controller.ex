@@ -83,17 +83,18 @@ defmodule Dotes.UserController do
     |> redirect(to: user_path(conn, :index))
   end
 
+  # Get recent matches for this user
   def get(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
 
     case Dotes.Match.get_for_user(user.id) do
-      {:ok, count} ->
+      {:ok, %{succeeded: succeeded, skipped: skipped, failed: failed}} ->
         conn
-        |> put_flash(:info, "Fetched #{count} matches")
+        |> put_flash(:info, "Fetched #{succeeded} matches. (#{skipped} skipped and #{failed} failed)")
         |> redirect(to: user_path(conn, :show, user))
-      {:error, _reason} ->
+      {:error, reason} ->
         conn
-        |> put_flash(:info, "Match fetch failed")
+        |> put_flash(:info, "Match fetch failed: #{reason}")
         |> redirect(to: user_path(conn, :show, user))
     end
 

@@ -68,16 +68,26 @@ defmodule Dotes.Match do
       {:error, reason} -> {:error, reason}
       
       {:ok, %{"matches" => summaries}} ->
-        fetched = summaries
+        matches = summaries
         |> Enum.map(&Map.fetch(&1, "match_id"))
         |> Enum.map(fn {:ok, match_id} -> match_id end)
         |> Enum.map(&async_match/1)
         |> Enum.map(&await_match/1)
-        |> Enum.filter(&(&1))
 
-        {:ok, length(fetched)}
+        {:ok, get_match_fetched_status_counts(matches)}
     end
 
+  end
+
+  defp get_match_fetched_status_counts(matches) do
+    skipped = length Enum.filter(matches, fn m -> m == false end)
+    failed = length Enum.filter(matches, fn
+      {:error, reason} -> true
+      %Ecto.Changeset{} = changeset -> !changeset.valid?
+      _ -> false
+    end)
+    succeeded = length(matches) - skipped - failed
+    %{succeeded: succeeded, skipped: skipped, failed: failed}
   end
 
   @doc """
@@ -95,27 +105,87 @@ defmodule Dotes.Match do
     {:ok, length(match_ids)}
   end
 
+  # Will return either
+  # {:error, "Already exists"}, if the match has been previously fetched
+  # task, the asynchronous function wrapping Dota.match(match_id)
   defp async_match(match_id) do
+    case should_get_match?(match_id) do
+      {:ok, ^match_id} -> Task.async(fn -> Dota.match(match_id) end)
+      error -> error
+    end
+  end
+  
+  # TODO: Use this in various places to check if we should get a match?
+  def should_get_match?(match_id) do
     case MatchCache.get(match_id) do
       {:ok, _id, :success} ->
         Logger.debug "Skipping match #{match_id}"
-        {:error, "Already exists"}
+        {:error, :fetched, "Match #{match_id} has already been fetched"}
       _ ->
         Logger.debug "Fetching match #{match_id}"
         MatchCache.add(match_id)
-        Task.async(fn -> Dota.match(match_id) end)
+        {:ok, match_id}
     end
   end
 
+  # If we skipped the match bc we previously fetched it
   defp await_match({:error, _reason}), do: false
+  # Catch the async task and wait for it to finish. Pass it to handle_match when done
   defp await_match(task) do
     Task.await(task, 10_000) |> handle_match
   end
 
+  # If Dota.match(match_id) found the match, create it and return whatever
+  # Dotes.MatchController returns
   defp handle_match({:ok, details}) do
-    Dotes.MatchController.create_match(details)
+    do_create(details)
   end
+  # Otherwise return an error tuple
   defp handle_match({:error, reason}), do: {:error, reason}
+  
+  def create(match_id) do
+    case should_get_match?(match_id) do
+      {:ok, ^match_id} -> fetch(match_id)
+      error -> error
+    end
+  end
+  
+  def fetch(match_id) do
+    result = case Dota.match(match_id) do
+      {:ok, match_params} -> do_create(match_params)
+      {:error, reason} -> {:error, :no_match, reason}
+    end
+  end
+  
+  def do_create({:error, _reason}), do: nil
+  def do_create(match_params) do
+    c = changeset(%Dotes.Match{}, match_params)
+    result = Repo.insert(c)
+    case result do
+      {:ok, match} ->
+        memorize(match)
+        insert_players(match, match_params["players"])
+        {:ok, match}
+      _ -> 
+        Logger.error("Match #{match_params["match_id"]} is invalid")
+        {:error, c}
+    end
+    result
+  end
+  
+  defp insert_players(match, players) do
+    player_changesets = Enum.map players, fn player ->
+      match |> build_assoc(:players) |> Player.changeset(player)
+    end
+    case Enum.all?(player_changesets, fn pc -> pc.valid? end) do
+      true ->
+        Enum.each(player_changesets, fn pc -> Repo.insert(pc) end)
+      _ ->
+        Logger.error("Match #{match.match_id}: not all players are valid")
+        forget(match.match_id)
+        Repo.delete(match)
+    end
+  end
 
   def memorize(match) do
     MatchCache.update(match.match_id, match.id, :success)
@@ -131,7 +201,5 @@ defmodule Dotes.Match do
 end
 
 defimpl Phoenix.Param, for: Dotes.Match do
-  def to_param(%{match_id: match_id}) do
-    "#{match_id}"
-  end
+  def to_param(%{match_id: match_id}), do: "#{match_id}"
 end
