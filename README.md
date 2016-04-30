@@ -24,14 +24,13 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
   - or at least log them
 
 ## DOTES TODO
-do something so when we get lists of things, we know how many were skipped, succeeded, failed.
-log these numbers
-log the failures individually
-maybe keep the failed ones somewhere so we can retry them
-retry failed ones automatically?
-if player insertion fails, delete the match
-maybe just get all player changesets before inserting match
-be able to insert bot players?
+- for batch fetches, track IDs that fail
+  - log list at the end, show why each failed
+- store something in the db for matches that will always fail, so we don't keep retyring them
+- keep a list somewhere of all the different failures that can happen
+  - service unavailable (should auto retry?)
+  - not all players are valid
+  - practice matches
 
 - handle API calls that fail
 - nice display of players and matches

@@ -145,7 +145,10 @@ defmodule Dotes.Match do
     do_create(details)
   end
   # Otherwise return an error tuple
-  defp handle_match({:error, reason}), do: {:error, reason}
+  defp handle_match({:error, reason}) do
+    Logger.error("Match creation failed: #{inspect reason}")
+    {:error, reason}
+  end
   
   def create(match_id) do
     case should_get_match?(match_id) do
