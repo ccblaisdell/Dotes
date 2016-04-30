@@ -107,18 +107,22 @@ defmodule Dotes.MatchController do
   end
 
   def get_recent(conn, _) do
-    count = from(u in User)
+    match_counts = from(u in User)
     |> select([u], u.id)
     |> Repo.all
     |> Enum.map(&async_get_for_user/1)
-    |> Enum.map(&await_get_for_user/1)
-    |> Enum.to_list
-    |> Enum.sum
+    |> Enum.map(&await_get_for_user/1)  
+    |> Enum.reduce(%{}, &Match.reduce_counts/2)
 
     conn
-    |> put_flash(:info, "Fetched #{count} matches")
+    |> put_flash_match_counts(match_counts)
     |> redirect(to: match_path(conn, :index))
   end
+  
+  def put_flash_match_counts(c, %{succeeded: succeeded, skipped: skipped, failed: failed}) do
+    put_flash(c, :info, "Fetched #{succeeded} matches. (#{skipped} skipped and #{failed} failed)")
+  end
+  def put_flash_match_counts(c, _), do: put_flash(c, :info, "Fetched some matches")
 
   defp async_get_for_user(id),   do: Task.async(fn -> Match.get_for_user(id) end)
   defp await_get_for_user(task), do: wrap_await_for_user(task) |> handle_get_for_user
@@ -130,6 +134,7 @@ defmodule Dotes.MatchController do
       {:error, task}
   end
 
+  # TODO: This should take {:ok, [success: s, skipped: sk, failed: f]}
   defp handle_get_for_user({:ok, n}), do: n
   defp handle_get_for_user({:error, _}), do: 0
 end

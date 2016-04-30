@@ -88,9 +88,9 @@ defmodule Dotes.UserController do
     user = Repo.get!(User, id)
 
     case Dotes.Match.get_for_user(user.id) do
-      {:ok, %{succeeded: succeeded, skipped: skipped, failed: failed}} ->
+      {:ok, match_counts} ->
         conn
-        |> put_flash(:info, "Fetched #{succeeded} matches. (#{skipped} skipped and #{failed} failed)")
+        |> Dotes.MatchController.put_flash_match_counts(match_counts)
         |> redirect(to: user_path(conn, :show, user))
       {:error, reason} ->
         conn
@@ -102,10 +102,16 @@ defmodule Dotes.UserController do
 
   def get_all(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
-    {:ok, count} = Dotes.Match.get_all_for_user(user.id)
-
-    conn
-    |> put_flash(:info, "Fetched #{count} matches")
-    |> redirect(to: user_path(conn, :show, user))
+    
+    case Dotes.Match.get_all_for_user(user.id) do
+      {:ok, match_counts} ->
+        conn
+        |> Dotes.MatchController.put_flash_match_counts(match_counts)
+        |> redirect(to: user_path(conn, :show, user))
+      {:error, reason} ->
+        conn
+        |> put_flash(:info, "Match fetch failed: #{reason}")
+        |> redirect(to: user_path(conn, :show, user))
+    end
   end
 end

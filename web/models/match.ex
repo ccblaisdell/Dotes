@@ -1,7 +1,9 @@
 defmodule Dotes.Match do
   use Dotes.Web, :model
+  alias Dotes.Repo
   alias Dotes.Utils
   alias Dotes.MatchCache
+  alias Dotes.Player
   require Logger
 
   schema "matches" do
@@ -58,7 +60,7 @@ defmodule Dotes.Match do
   def get_for_user(user_id) do
     {:ok, %{personaname: name}} = Dotes.UserCache.get(user_id)
     Logger.debug "Get match history for #{name}"
-    history = Dota.history(user_id)
+    history = Dota.history_ids(user_id)
 
     case history do
       {:error, {:ok, response}} -> 
@@ -67,13 +69,10 @@ defmodule Dotes.Match do
 
       {:error, reason} -> {:error, reason}
       
-      {:ok, %{"matches" => summaries}} ->
-        matches = summaries
-        |> Enum.map(&Map.fetch(&1, "match_id"))
-        |> Enum.map(fn {:ok, match_id} -> match_id end)
+      {:ok, ids} ->
+        matches = ids
         |> Enum.map(&async_match/1)
         |> Enum.map(&await_match/1)
-
         {:ok, get_match_fetched_status_counts(matches)}
     end
 
@@ -89,25 +88,30 @@ defmodule Dotes.Match do
     succeeded = length(matches) - skipped - failed
     %{succeeded: succeeded, skipped: skipped, failed: failed}
   end
+  
+  def reduce_counts(counts_for_user, acc) do
+    acc = Map.update(acc, :succeeded, counts_for_user[:succeeded], fn x -> x + counts_for_user[:succeeded] end)
+    acc = Map.update(acc, :skipped, counts_for_user[:skipped], fn x -> x + counts_for_user[:skipped] end)
+    Map.update(acc, :failed, counts_for_user[:failed], fn x -> x + counts_for_user[:failed] end)
+  end
 
   @doc """
   Gets all matches for a user by scraping dotabuff for match_ids and then 
   requesting match details from the steam API.
   """
   def get_all_for_user(user_id) do
-    match_ids = Dota.Dotabuff.match_ids_stream(user_id)
+    matches = Dota.Dotabuff.match_ids_stream(user_id)
     |> Stream.concat
     |> Stream.map(&async_match/1)
     |> Stream.map(&await_match/1)
     |> Enum.to_list
-    |> Enum.filter(&(&1))
 
-    {:ok, length(match_ids)}
+    {:ok, get_match_fetched_status_counts(matches)}
   end
 
   # Will return either
-  # {:error, "Already exists"}, if the match has been previously fetched
-  # task, the asynchronous function wrapping Dota.match(match_id)
+  # {:error, "Already exists"}: if the match has been previously fetched, or
+  # task: the asynchronous function wrapping Dota.match(match_id)
   defp async_match(match_id) do
     case should_get_match?(match_id) do
       {:ok, ^match_id} -> Task.async(fn -> Dota.match(match_id) end)
@@ -129,7 +133,7 @@ defmodule Dotes.Match do
   end
 
   # If we skipped the match bc we previously fetched it
-  defp await_match({:error, _reason}), do: false
+  defp await_match({:error, :fetched, _reason}), do: false
   # Catch the async task and wait for it to finish. Pass it to handle_match when done
   defp await_match(task) do
     Task.await(task, 10_000) |> handle_match
@@ -150,6 +154,9 @@ defmodule Dotes.Match do
     end
   end
   
+  # Checks to see if we have this match, fetches data from API and inserts into repo
+  # Returns one of the following.
+  # {:error, :no_match, reason} ->
   def fetch(match_id) do
     result = case Dota.match(match_id) do
       {:ok, match_params} -> do_create(match_params)
@@ -167,7 +174,7 @@ defmodule Dotes.Match do
         insert_players(match, match_params["players"])
         {:ok, match}
       _ -> 
-        Logger.error("Match #{match_params["match_id"]} is invalid")
+        Logger.error("Match #{match_params["match_id"]} is invalid. #{inspect Map.take(c, [:changes, :constraints, :model, :valid])}")
         {:error, c}
     end
     result
