@@ -51,6 +51,7 @@ defmodule Dotes.Web do
       use Phoenix.HTML
 
       import Dotes.Router.Helpers
+      import Dotes.ErrorHelpers
       require IEx
     end
   end

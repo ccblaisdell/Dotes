@@ -7,6 +7,9 @@ defmodule Dotes.UserController do
   alias Dotes.PaginationView
 
   plug :scrub_params, "user" when action in [:create, :update]
+  
+  # TODO
+  # def update_avatar(conn, %{"id" => id})
 
   def index(conn, _params) do
     users = Repo.all(User)

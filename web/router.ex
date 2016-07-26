@@ -25,6 +25,9 @@ defmodule Dotes.Router do
     resources "/users", UserController
     get "/users/:id/get", UserController, :get
     get "/users/:id/get_all", UserController, :get_all
+    
+    post "/rolls/go", RollController, :go
+    resources "/rolls", RollController
   end
 
   # Other scopes may use custom stacks.

@@ -17,6 +17,7 @@
         <ul class="nav nav-pills pull-right">
           <li><%= link "Users", to: user_path(@conn, :index) %></li>
           <li><%= link "Matches", to: match_path(@conn, :index) %></li>
+          <li><%= link "Rolls", to: roll_path(@conn, :index) %></li>
         </ul>
         <span class="logo"></span>
       </div>

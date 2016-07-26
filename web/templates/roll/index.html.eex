@@ -1,0 +1,40 @@
+<h2>Listing rolls</h2>
+
+<%= form_for @changeset, roll_path(@conn, :create), fn f -> %>
+  <%= roller(@users, List.first(@rolls)) %>
+  <%= content_tag(:input, nil, type: "submit", value: "Roll!") %>
+<% end %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Absent</th>
+      <th>Immune</th>
+      <th>Eligible</th>
+      <th>Rolled</th>
+      <th>date</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for roll <- @rolls do %>
+    <tr>
+      <td><%= roll_absent roll.immune_user_ids ++ roll.eligible_user_ids %></td>
+      <td><%= roll_list roll.immune_user_ids %></td>
+      <td><%= roll_list roll.eligible_user_ids %></td>
+      <td>
+        <%= roll.number %>
+        <%= rolled_user(roll) %>
+      </td>
+      <td><%= roll.inserted_at %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: roll_path(@conn, :show, roll), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: roll_path(@conn, :edit, roll), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: roll_path(@conn, :delete, roll), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>

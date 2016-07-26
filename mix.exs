@@ -39,8 +39,8 @@ defmodule Dotes.Mixfile do
      {:scrivener_ecto, "~> 1.0"},
      {:cowboy, "~> 1.0"},
      {:timex, "~> 3.0.4"},
-     #  {:dota, git: "https://github.com/ccblaisdell/dota-elixir.git", tag: "v0.0.14"}]
-     {:dota, path: "../dota"}]
+     {:dota, git: "https://github.com/ccblaisdell/dota-elixir.git", tag: "v0.0.15"}]
+     # {:dota, path: "../dota"}]
   end
   
   defp aliases do

@@ -1,0 +1,13 @@
+<h2>Show roll</h2>
+
+<ul>
+
+  <li>
+    <strong>Number:</strong>
+    <%= @roll.number %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: roll_path(@conn, :edit, @roll) %>
+<%= link "Back", to: roll_path(@conn, :index) %>

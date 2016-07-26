@@ -1,0 +1,6 @@
+<h2>Edit roll</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: roll_path(@conn, :update, @roll) %>
+
+<%= link "Back", to: roll_path(@conn, :index) %>
