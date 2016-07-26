@@ -1,5 +1,8 @@
 defmodule Dotes.MatchView do
   use Dotes.Web, :view
+  alias Dotes.Player
+  alias Dotes.PlayerView
+  
   @short_time_format_string "{WDshort} {h12}:{m}{am}"
   @long_time_format_string "{M}-{D}-{YYYY}, {h12}:{m}{am}"
 
@@ -41,5 +44,29 @@ defmodule Dotes.MatchView do
   def dotabuff_match_url(match_id), do: "http://dotabuff.com/matches/#{match_id}"
 
   def yasp_match_url(match_id), do: "http://yasp.co/matches/#{match_id}"
+  
+  def list_match_table(match, players, team, conn) do
+    content_tag :table, [ match_table_head(team), match_table_players(match, players, conn) ], class: "match-table"
+  end
+  
+  def match_table(match, conn) do
+    content_tag :table, [ match_table_head("Radiant"), match_table_players(match, Player.radiant_team(match.players), conn),
+                          match_table_head("Dire"), match_table_players(match, Player.dire_team(match.players), conn)], class: "match-table"
+  end
+  
+  def match_table_head(team) do
+    cols = [team, "lvl", "kda", "g", "gs", "lh", "d", "gpm", "xpm", "hd", "hh", "td", "items", ""]
+    content_tag :thead, 
+      content_tag(:tr, Enum.map(cols, fn col -> content_tag(:th, col) end))
+  end
+  
+  # def match_table_head("Dire" = team) do
+  #   content_tag :thead, 
+  #     content_tag(:tr, content_tag(:th, team))
+  # end
+  
+  def match_table_players(match, players, conn) do
+    content_tag :tbody, Enum.map(players, fn player -> render(PlayerView, "player.html", player: player, match: match, conn: conn) end)
+  end
 
 end

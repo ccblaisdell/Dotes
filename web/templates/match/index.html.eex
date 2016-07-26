@@ -11,23 +11,9 @@
     <div class="flex match-header">
       <%= content_tag :span, won?(match), class: "match-outcome" %>
       <div class="match-players">
-        <%= for player <- match.players |> Enum.filter(&Dotes.Player.cached?(&1)) |> Enum.sort(&Dotes.Player.by_slot(&1, &2)) do %>
-          <%= Dotes.PlayerView.hero_img(player.hero_id) %>
-          <%= tag "img", src: player.user.avatar %>
-          <%= player.user.personaname %>
-          <%= Dota.Hero.localized_name(player.hero_id) %>
-          <%= content_tag :span, Enum.join([player.kills, player.deaths, player.assists], "/") %>
-          <%= content_tag :span, "GPM: " <> Integer.to_string(player.gold_per_min) %>
-          <%= content_tag :span, "XPM: " <> Integer.to_string(player.xp_per_min) %>
-          <div>
-            <%= Dotes.PlayerView.item_img(player.item_0, width: "43", height: "32") %>
-            <%= Dotes.PlayerView.item_img(player.item_1, width: "43", height: "32") %>
-            <%= Dotes.PlayerView.item_img(player.item_2, width: "43", height: "32") %>
-            <%= Dotes.PlayerView.item_img(player.item_3, width: "43", height: "32") %>
-            <%= Dotes.PlayerView.item_img(player.item_4, width: "43", height: "32") %>
-            <%= Dotes.PlayerView.item_img(player.item_5, width: "43", height: "32") %>
-          </div>
-        <% end %>
+        <% players = match.players |> Enum.filter(&Dotes.Player.cached?(&1)) |> Enum.sort(&Dotes.Player.by_slot(&1, &2)) %>
+        <% team = Dotes.Player.team(List.first(players)) |> to_string |> String.capitalize %>
+        <%= list_match_table(match, players, team, @conn) %>
       </div>
     </div>
 

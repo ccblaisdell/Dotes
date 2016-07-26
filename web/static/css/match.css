@@ -27,3 +27,12 @@
 .match-duration {}
 .match-end {}
 .match-links {}
+
+.match-table {
+  width: 100%;
+}
+.match-table td,
+.match-table th {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}

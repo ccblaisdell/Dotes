@@ -63,6 +63,10 @@ defmodule Dotes.Player do
   def won?(player, match) do
     radiant?(player) == match.radiant_win
   end
+  
+  def team(player) do
+    if radiant?(player), do: :radiant, else: :dire
+  end
 
   def radiant_team(players) do
     Enum.filter(players, fn p -> radiant?(p) end)
