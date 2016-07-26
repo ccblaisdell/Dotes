@@ -45,8 +45,8 @@ defmodule Dotes.Match do
   If no params are provided, an invalid changeset is returned
   with no validation performed.
   """
-  def changeset(model, params \\ :empty) do
-    if params != :empty do
+  def changeset(model, params \\ %{}) do
+    if params != %{} do
       params = Map.update!(params, "match_id", &to_string/1)
     end
     model

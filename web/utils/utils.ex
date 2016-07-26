@@ -22,8 +22,8 @@ defmodule Dotes.Utils do
       timestamp
       |> +(@epoch)
       |> :calendar.gregorian_seconds_to_datetime
-      |> Timex.Date.from
-      |> Timex.Date.local
+      |> Timex.to_datetime
+      |> Timex.local
     end
 
     def to_timestamp(datetime) do

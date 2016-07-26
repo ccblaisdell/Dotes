@@ -10,7 +10,7 @@ defmodule Dotes.MatchView do
     format_time( Dotes.Utils.Time.from_timestamp(time) )
 
   def format_time(time) do
-    case Timex.DateFormat.format(time, @short_time_format_string) do
+    case Timex.format(time, @short_time_format_string) do
       {:ok, str} -> str
       {:error, _} -> "bad time"
     end
@@ -20,7 +20,7 @@ defmodule Dotes.MatchView do
     format_time_long( Dotes.Utils.Time.from_timestamp(time) )
 
   def format_time_long(time) do
-    case Timex.DateFormat.format(time, @long_time_format_string) do
+    case Timex.format(time, @long_time_format_string) do
       {:ok, str} -> str
       {:error, _} -> "bad time"
     end

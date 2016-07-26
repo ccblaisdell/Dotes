@@ -24,10 +24,12 @@ defmodule Dotes.ModelCase do
   end
 
   setup tags do
-    unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(Dotes.Repo, [])
-    end
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Dotes.Repo)
 
+    unless tags[:async] do
+     Ecto.Adapters.SQL.Sandbox.mode(Dotes.Repo, {:shared, self()})
+    end
+    
     :ok
   end
 
@@ -46,7 +48,9 @@ defmodule Dotes.ModelCase do
 
       assert {:password, "is unsafe"} in errors_on(%User{}, password: "password")
   """
-  def errors_on(model, data) do
-    model.__struct__.changeset(model, data).errors
+  def errors_on(struct, data) do
+    struct.__struct__.changeset(struct, data)
+    |> Ecto.Changeset.traverse_errors(&Dotes.ErrorHelpers.translate_error/1)
+    |> Enum.flat_map(fn {key, errors} -> for msg <- errors, do: {key, msg} end)
   end
 end
