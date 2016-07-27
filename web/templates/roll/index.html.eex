@@ -30,8 +30,7 @@
       <td><%= roll.inserted_at %></td>
 
       <td class="text-right">
-        <%= link "Show", to: roll_path(@conn, :show, roll), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: roll_path(@conn, :edit, roll), class: "btn btn-default btn-xs" %>
+        <!--<%= link "Show", to: roll_path(@conn, :show, roll), class: "btn btn-default btn-xs" %>-->
         <%= link "Delete", to: roll_path(@conn, :delete, roll), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
       </td>
     </tr>
