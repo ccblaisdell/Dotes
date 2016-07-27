@@ -39,7 +39,7 @@ defmodule Dotes.Mixfile do
      {:scrivener_ecto, "~> 1.0"},
      {:cowboy, "~> 1.0"},
      {:timex, "~> 3.0.4"},
-     {:dota, git: "https://github.com/ccblaisdell/dota-elixir.git", tag: "v0.0.16"}]
+     {:dota, git: "https://github.com/ccblaisdell/dota-elixir.git", tag: "v0.0.17"}]
      # {:dota, path: "../dota"}]
   end
   
