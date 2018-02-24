@@ -77,5 +77,4 @@ defmodule DotesWeb.RollView do
     content_tag :div, roll_list(all_users_ids -- present_user_ids),
       style: "opacity: 0.5;"
   end
-  
 end

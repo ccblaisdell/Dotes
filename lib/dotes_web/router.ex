@@ -11,6 +11,8 @@ defmodule DotesWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
+    plug :fetch_flash
   end
 
   scope "/", DotesWeb do
@@ -31,7 +33,8 @@ defmodule DotesWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", Dotes do
-  #   pipe_through :api
-  # end
+  scope "/api", DotesWeb do
+    pipe_through :api
+    resources "/rolls", RollApiController, only: [:index]
+  end
 end
