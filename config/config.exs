@@ -22,7 +22,7 @@ if Mix.env == :dev do
 end
 
 # Configures the endpoint
-config :dotes, Dotes.Endpoint,
+config :dotes, DotesWeb.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
   secret_key_base: "qiZYvU2SL6L+CM/uiOeigy816Ix3x4J9vnBPHH6GKexCxh077szCh+hjSpzCxICL",

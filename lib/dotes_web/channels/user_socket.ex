@@ -1,4 +1,4 @@
-defmodule Dotes.UserSocket do
+defmodule DotesWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels

@@ -28,13 +28,13 @@ defmodule Dotes.Web do
 
   def controller do
     quote do
-      use Phoenix.Controller
+      use Phoenix.Controller, namespace: DotesWeb
 
       alias Dotes.Repo
       import Ecto
       import Ecto.Query#, only: [from: 1, from: 2, where]
 
-      import Dotes.Router.Helpers
+      import DotesWeb.Router.Helpers
       require IEx
       require Logger
     end
@@ -42,7 +42,8 @@ defmodule Dotes.Web do
 
   def view do
     quote do
-      use Phoenix.View, root: "web/templates"
+      use Phoenix.View, root: "lib/dotes_web/templates",
+                        namespace: DotesWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_csrf_token: 0, get_flash: 2, view_module: 1]
@@ -50,8 +51,8 @@ defmodule Dotes.Web do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import Dotes.Router.Helpers
-      import Dotes.ErrorHelpers
+      import DotesWeb.Router.Helpers
+      import DotesWeb.ErrorHelpers
       require IEx
     end
   end

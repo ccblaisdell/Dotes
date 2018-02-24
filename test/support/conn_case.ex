@@ -1,4 +1,4 @@
-defmodule Dotes.ConnCase do
+defmodule DotesWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -24,10 +24,10 @@ defmodule Dotes.ConnCase do
       import Ecto.Model
       import Ecto.Query, only: [from: 2]
 
-      import Dotes.Router.Helpers
+      import DotesWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint Dotes.Endpoint
+      @endpoint DotesWeb.Endpoint
     end
   end
 

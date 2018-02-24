@@ -8,7 +8,7 @@ defmodule Dotes do
 
     children = [
       # Start the endpoint when the application starts
-      supervisor(Dotes.Endpoint, []),
+      supervisor(DotesWeb.Endpoint, []),
       # Start the Ecto repository
       worker(Dotes.Repo, []),
       # Here you could define other workers and supervisors as children

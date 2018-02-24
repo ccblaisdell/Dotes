@@ -6,21 +6,21 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
-config :dotes, Dotes.Endpoint,
+config :dotes, DotesWeb.Endpoint,
   http: [port: System.get_env("PORT") || 4000],
   debug_errors: true,
   code_reloader: true,
   cache_static_lookup: false,
   watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
-             cd: Path.expand("../", __DIR__)]]
+                   cd: Path.expand("../assets", __DIR__)]]
 
 # Watch static and templates for browser reloading.
-config :dotes, Dotes.Endpoint,
+config :dotes, DotesWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif)$},
-      ~r{web/views/.*(ex)$},
-      ~r{web/templates/.*(eex)$}
+      ~r{web/dotes_web/views/.*(ex)$},
+      ~r{web/dotes_web/templates/.*(eex)$}
     ]
   ]
 

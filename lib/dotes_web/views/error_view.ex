@@ -1,4 +1,4 @@
-defmodule Dotes.ErrorView do
+defmodule DotesWeb.ErrorView do
   use Dotes.Web, :view
 
   def render("404.html", _assigns) do

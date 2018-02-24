@@ -4,7 +4,7 @@ defmodule Dotes.Mixfile do
   def project do
     [app: :dotes,
      version: "0.0.1",
-     elixir: "~> 1.3",
+     elixir: "~> 1.6",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
@@ -23,14 +23,14 @@ defmodule Dotes.Mixfile do
   end
 
   # Specifies which paths to compile per environment
-  defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
-  defp elixirc_paths(_),     do: ["lib", "web"]
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_),     do: ["lib"]
 
   # Specifies your project dependencies
   #
   # Type `mix help deps` for examples and options
   defp deps do
-    [{:phoenix, "~> 1.2.0"},
+    [{:phoenix, "~> 1.3.0"},
      {:postgrex, "~> 0.11.2"},
      {:phoenix_ecto, "~> 3.0"},
      {:phoenix_html, "~> 2.6"},
@@ -39,6 +39,7 @@ defmodule Dotes.Mixfile do
      {:scrivener_ecto, "~> 1.0"},
      {:cowboy, "~> 1.0"},
      {:timex, "~> 3.0.4"},
+     {:poison, "~> 3.0", override: true},
      {:dota, git: "https://github.com/ccblaisdell/dota-elixir.git", tag: "v0.0.17"}]
      # {:dota, path: "../dota"}]
   end

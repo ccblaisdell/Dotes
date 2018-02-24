@@ -1,5 +1,5 @@
 defmodule Dotes.RollControllerTest do
-  use Dotes.ConnCase
+  use DotesWeb.ConnCase
 
   alias Dotes.Roll
   @valid_attrs %{number: 42}

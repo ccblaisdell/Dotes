@@ -1,4 +1,4 @@
-defmodule Dotes.ErrorHelpers do
+defmodule DotesWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """

@@ -1,5 +1,5 @@
 defmodule Dotes.MatchControllerTest do
-  use Dotes.ConnCase
+  use DotesWeb.ConnCase
 
   alias Dotes.Match
   @valid_attrs %{match_id: "some content"}

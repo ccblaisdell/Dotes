@@ -1,5 +1,5 @@
 defmodule Dotes.PageControllerTest do
-  use Dotes.ConnCase
+  use DotesWeb.ConnCase
 
   test "GET /" do
     conn = get conn(), "/"

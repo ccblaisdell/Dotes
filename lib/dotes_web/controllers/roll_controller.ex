@@ -1,4 +1,4 @@
-defmodule Dotes.RollController do
+defmodule DotesWeb.RollController do
   use Dotes.Web, :controller
 
   alias Dotes.Roll

@@ -1,7 +1,7 @@
-defmodule Dotes.Endpoint do
+defmodule DotesWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :dotes
 
-  socket "/socket", Dotes.UserSocket
+  socket "/socket", DotesWeb.UserSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -35,5 +35,5 @@ defmodule Dotes.Endpoint do
     key: "_dotes_key",
     signing_salt: "NX+exacI"
 
-  plug Dotes.Router
+  plug DotesWeb.Router
 end

@@ -1,4 +1,4 @@
-defmodule Dotes.RollView do
+defmodule DotesWeb.RollView do
   use Dotes.Web, :view
   alias Dotes.UserCache
   

@@ -1,3 +1,3 @@
 defmodule Dotes.PageViewTest do
-  use Dotes.ConnCase, async: true
+  use DotesWeb.ConnCase, async: true
 end

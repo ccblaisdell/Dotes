@@ -1,4 +1,4 @@
-defmodule Dotes.PageController do
+defmodule DotesWeb.PageController do
   use Dotes.Web, :controller
 
   def index(conn, _params) do

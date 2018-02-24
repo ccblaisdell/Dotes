@@ -1,4 +1,4 @@
-defmodule Dotes.ChannelCase do
+defmodule DotesWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -26,7 +26,7 @@ defmodule Dotes.ChannelCase do
 
 
       # The default endpoint for testing
-      @endpoint Dotes.Endpoint
+      @endpoint DotesWeb.Endpoint
     end
   end
 

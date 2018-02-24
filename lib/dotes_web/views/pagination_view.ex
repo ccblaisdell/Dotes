@@ -1,4 +1,4 @@
-defmodule Dotes.PaginationView do
+defmodule DotesWeb.PaginationView do
   use Dotes.Web, :view
   require IEx
 

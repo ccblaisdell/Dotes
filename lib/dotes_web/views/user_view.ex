@@ -1,4 +1,4 @@
-defmodule Dotes.UserView do
+defmodule DotesWeb.UserView do
   use Dotes.Web, :view
 
   def dotabuff_user_url(id), do: "http://dotabuff.com/players/#{id}"

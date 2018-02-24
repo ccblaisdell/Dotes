@@ -1,4 +1,4 @@
-defmodule Dotes.PlayerView do
+defmodule DotesWeb.PlayerView do
   use Dotes.Web, :view
 
   def item_img(id, opts \\ []) do

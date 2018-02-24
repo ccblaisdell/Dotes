@@ -1,4 +1,4 @@
-defmodule Dotes.Router do
+defmodule DotesWeb.Router do
   use Dotes.Web, :router
 
   pipeline :browser do
@@ -13,7 +13,7 @@ defmodule Dotes.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", Dotes do
+  scope "/", DotesWeb do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index

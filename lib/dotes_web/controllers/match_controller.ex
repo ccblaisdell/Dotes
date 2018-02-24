@@ -1,4 +1,4 @@
-defmodule Dotes.MatchController do
+defmodule DotesWeb.MatchController do
   use Dotes.Web, :controller
 
   alias Dotes.Match

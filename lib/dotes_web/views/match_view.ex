@@ -1,4 +1,4 @@
-defmodule Dotes.MatchView do
+defmodule DotesWeb.MatchView do
   use Dotes.Web, :view
   alias Dotes.Player
   alias Dotes.PlayerView

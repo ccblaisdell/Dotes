@@ -1,4 +1,4 @@
-defmodule Dotes.UserController do
+defmodule DotesWeb.UserController do
   use Dotes.Web, :controller
   require Logger
 
