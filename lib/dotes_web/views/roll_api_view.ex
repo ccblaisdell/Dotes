@@ -10,6 +10,7 @@ defmodule DotesWeb.RollApiView do
 
   def roll_json(roll) do
     %{
+      inserted_at: roll.inserted_at,
       number: roll.number,
       eligible_user_ids: roll.eligible_user_ids,
       immune_user_ids: roll.immune_user_ids
