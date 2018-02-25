@@ -16,10 +16,9 @@
       <div class="header">
         <ul class="nav nav-pills pull-right">
           <li><%= link "Users", to: user_path(@conn, :index) %></li>
-          <li><%= link "Matches", to: match_path(@conn, :index) %></li>
           <li><%= link "Rolls", to: roll_path(@conn, :index) %></li>
         </ul>
-        <span class="logo"></span>
+        <h1>Rolls</h1>
       </div>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
