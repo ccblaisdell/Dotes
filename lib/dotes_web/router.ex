@@ -18,7 +18,7 @@ defmodule DotesWeb.Router do
   scope "/", DotesWeb do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
+    get "/", RollController, :index
     
     get "/matches/delete_all", MatchController, :delete_all
     get "/matches/get_recent", MatchController, :get_recent
